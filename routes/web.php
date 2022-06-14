@@ -19,9 +19,8 @@ Route::get('/', function () {
     return redirect('home');	
 });
 
-Route::get('/home', function () {
-    return view('main_dashboard');
-});
+Route::get('/home', [MainDashboardController::class, 'index']);
+
 
 Route::get('/profile', [ProfileController::class, 'getView']);
 

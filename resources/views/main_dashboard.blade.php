@@ -1,18 +1,60 @@
 @extends('basic_component')
 
-@section('page content')
-<div class="row align-items-center py-4">
-    <div class="col-2" style="width: min-content;">
-        <button type="button" class="btn btn-dark material-icons" disabled style="background: #212529 !important; opacity: 1 !important;">
-            home
-        </button>
+@section('page content') 
+    <div class="row align-items-center py-4">
+        <div class="col-2" style="width: min-content;">
+            <button type="button" class="btn btn-dark material-icons" disabled style="background: #212529 !important; opacity: 1 !important;">
+                home
+            </button>
+        </div>
+        <div class="col-10 col-md-11">
+            <h4 class="m-0 mb-1 row discipline-name">
+                Dashboard de Disciplinas
+            </h4>
+        </div>
     </div>
-    <div class="col-10 col-md-11">
-        <h4 class="m-0 mb-1 row discipline-name">
-            Dashboard de Disciplinas
-        </h4>
-    </div>
+
+    @php
+        $current_module = $disciplinas[0]->modulo;
+        $colors = ["green", "aqua", "blue", "darkblue"];
+        $random = rand(0,3);
+    @endphp
+    
+    <div class="periodos-containers container">
+        <h4 class="periodos_title">{{  $current_module}}</h4>
+            <div class="row" style="margin-left: 40px; margin-right:40px;">
+                @foreach ($disciplinas as $disciplina)
+                    @if($disciplina->modulo == $current_module)
+                    <div class="col-md-4 col-lg-3 pt-2 pb-3" id={{$disciplina->id_disciplina}}>
+                        <div class="card dashboard-card slot-2 <?php echo $colors[rand(0,3)]?> ">
+                            <h5 class="card-title">{{ $disciplina->name_disciplina }}</h5>                    
+                            <a class="stretched-link"></a>
+                        </div>
+                    </div>                                    
+                    @else
+                        </div>
+                        </div>                                                      
+
+                        @php
+                            $current_module = $disciplina->modulo;
+                        @endphp
+
+                        <div class="periodos-containers container">
+                            <h4 class="periodos_title">{{ $current_module }}</h4>
+                            <div class="row" style="margin-left: 40px; margin-right:40px;">
+                                <div class="col-md-4 col-lg-3 pt-2 pb-3">
+                                    <div class="card dashboard-card slot-2 green">
+                                        <h5 class="card-title">{{ $disciplina->name_disciplina }}</h5>                    
+                                        <a class="stretched-link"></a>
+                                    </div>
+                                </div>
+                            
+        @endif
+    @endforeach
 </div>
+</div> 
+
+
 
 <!--carrossel 1º Periodo-->
 <div class="periodos-containers container">

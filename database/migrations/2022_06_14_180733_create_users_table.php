@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,16 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-			$table->string('google_id')->nullable();
-            $table->string('name');
+            $table->string('ID')->primary();
             $table->string('email')->unique();
-			$table->string('picture_url')->nullable();
-			$table->string('siape')->nullable();
-			$table->string('requested_teacher')->default('NO'); //NO, REQUESTED, DENIED, ACCEPTED
-			$table->string('role')->default('S');
-            $table->rememberToken();
-            $table->timestamps();
+            $table->string('matricula')->unique();
+            $table->string('name');
+            $table->string('picture');
+            $table->string('user_role');
+            
         });
     }
 
@@ -36,4 +33,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('users');
     }
-};
+}
