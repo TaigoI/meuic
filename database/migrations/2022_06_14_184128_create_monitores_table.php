@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\Modulo;
+use App\Models\Monitores;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateModulosTable extends Migration
+class CreateMonitoresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,9 @@ class CreateModulosTable extends Migration
      */
     public function up()
     {
-        Schema::create('modulos', function (Blueprint $table) {
-            $table->id('id_modulo');
-            $table->string('modulo');
-            $table->string('id_disciplina');
+        Schema::create('monitores', function (Blueprint $table) {
+            $table->id('id_monitor');
+            $table->foreign('id_aluno')->references('email')->on('users');
             $table->foreign('id_disciplina')->references('id_disciplina')->on('disciplinas');
         });
     }
@@ -29,6 +28,6 @@ class CreateModulosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('modulos');
+        Schema::dropIfExists('monitores');
     }
 }

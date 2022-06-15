@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Modulo extends Model
+class Monitores extends Model
 {
     use HasFactory;
     // Definindo a PK
-    protected $primaryKey = 'id_modulo';
+    protected $table = 'monitores';
+    protected $primaryKey = 'id_monitor';
 
     /*
     As proximas duas linhas sao para evitar que ele tente incrementar
@@ -26,13 +26,13 @@ class Modulo extends Model
 
     // Evitar que o usuario acesse diretamente o userRole
     protected $fillable = [
-        'modulo',
+        'id_aluno',
         'id_disciplina'
     ];
 
-    public function disciplinas(){
-        
-            return $this->hasMany(Disciplina::class, 'id_disciplina', 'id_disciplina');
-        
+    // Definindo a relacao de FK
+    // Tem que alterar depois no banco a questao do email como PK
+    public function id_aluno(){
+        return $this->hasOne(User::class,'email');
     }
 }
