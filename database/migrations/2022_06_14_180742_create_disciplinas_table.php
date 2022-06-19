@@ -1,10 +1,12 @@
 <?php
 
+use App\Models\Disciplina;
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateDisciplinasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +15,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('subject', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::create('disciplinas', function (Blueprint $table) {
+            $table->string('id_disciplina')->primary();
+            $table->string('name_disciplina');
         });
     }
 
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('subject');
+        Schema::dropIfExists('disciplinas');
     }
-};
+}

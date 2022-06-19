@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<?php 
+$role = "monitor" //papel do usuario no sistema
+?>
+<html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -31,87 +34,36 @@
             </div>  
             <!--End of Meu@IC logo--> 
 
-			<!--Botoes Usuario Logado-->
-			@if(Auth::check())
-				<div class="header-buttons d-grid gap-2 d-flex flex-row justify-content-end align-items-center">
-					<!--Botoes Header-->
-					<!--Se o usuario for monitor-->
-					@if(Auth::user()->role == 'M')
-						<div class="dropdown">
-						<button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Monitor
-						</button>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="#">Historico</a>
-							<a class="dropdown-item" href="#">Administrar disciplina</a>
-						</div>
-						</div>
-					@endif
+            <div class="header-buttons d-grid gap-2 d-flex flex-row justify-content-end align-items-center">
+                <!--Botoes Header-->
+                @if(session()->has('ID'))
+                    <button class="btn rounded-pill topbar_button blue" type="button">
+                        <div class="material-icons">
+                            add_task
+                        </div>
+                        &nbsp;Atividades
+                    </button>
 
-					<!--Se o usuario for professor-->
-					@if(Auth::user()->role == 'T')
-						<div class="dropdown">
-						<button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Professor
-						</button>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="#">Gerenciar disciplinas</a>
-							<a class="dropdown-item" href="#">Gerenciar monitores</a>
-						</div>
-						</div>
-					@endif
-	
-					@if(Auth::user()->role == 'T' or Auth::user()->role == 'M')
-						<button class="btn rounded-pill topbar_button blue" type="button">
-							<div class="material-icons">
-								add_task
-							</div>
-							&nbsp;Atividades
-						</button>
-					@endif
-
-					<button class="btn rounded-pill topbar_button dark" type="button">
-						<div class="material-icons">
-							event
-						</div>
-						&nbsp;Agendar
-					</button>
-
-					@if(Request::is('profile'))
-						<form method="GET" action="/logout">
-							<button class="btn rounded-pill topbar_button dark" type="submit">
-								<div class="material-icons">
-									logout
-								</div>
-								&nbsp;Sair
-							</button>
-						</form>
-					@endif
-					<!--End of Botoes Header-->
-					
-					<!--Profile picture icon-->
-					@if(!Request::is('profile'))
-						<a href="/profile">
-							<img class="rounded-circle m-auto" src="{{Auth::user()->picture_url}}" width="40" height="40"> 
-						</a>
-					@endif
-					<!--End of Profile picture icon-->            
-				</div>      
-			@endif
-
-			<!--Botao Login-->
-			@if(!Auth::check())
-				<form method="GET" action="/auth/google">
-					<div class="header-buttons d-grid gap-2 d-flex flex-row justify-content-end align-items-center">
-						<button class="btn rounded-pill topbar_button white" type="submit">
-							<div class="px-1">
-								<img class="rounded-circle m-auto" src="https://logopng.com.br/logos/google-37.png" width="20" height="20"> 
-							</div>
-							&nbsp;Login with Google
-						</button>        
-					</div>
-				</form>
-			@endif
+                    <button class="btn rounded-pill topbar_button dark" type="button">
+                        <div class="material-icons">
+                            event
+                        </div>
+                        &nbsp;Agendar
+                    </button>
+                @else
+                    <button class="btn rounded-pill topbar_button white" type="button">
+                        <div class="px-1">
+                            <img class="rounded-circle m-auto" src="https://logopng.com.br/logos/google-37.png" width="20" height="20"> 
+                        </div>
+                        &nbsp;Login with Google
+                    </button>
+                @endif
+                <!--End of Botoes Header-->
+                
+                <!--Profile picture icon-->
+                <img class="rounded-circle m-auto" src="https://static1.purepeople.com.br/articles/0/32/59/50/@/3678243-jade-picon-volta-a-comentar-polemica-com-624x600-2.jpg" width="40" height="40"> 
+                <!--End of Profile picture icon-->            
+            </div>          
         </div>
         <!--End of Header-->
 
