@@ -35,4 +35,6 @@ class Modulo extends Model
             return $this->hasMany(Disciplina::class, 'id_disciplina', 'id_disciplina');
         
     }
+
+    
 }

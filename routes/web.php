@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\MainDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +16,10 @@ use App\Http\Controllers\ProfileController;
 |
 */
 
-Route::get('/', function () {
-    return redirect('home');	
-});
-
+Route::get('/', [MainDashboardController::class, 'index']);
 Route::get('/home', [MainDashboardController::class, 'index']);
+
+Route::get('/teste', [MainDashboardController::class, 'eloquentTest']);
 
 
 Route::get('/profile', [ProfileController::class, 'getView']);
@@ -27,3 +27,7 @@ Route::get('/profile', [ProfileController::class, 'getView']);
 Route::get('auth/google', [GoogleAuthController::class, 'redirect']);
 Route::get('callbacks/google', [GoogleAuthController::class, 'handleCallback']);
 Route::get('logout', [GoogleAuthController::class, 'logOut']);
+
+Route::get('/monitors',function(){
+    return view('manage_monitors');
+});

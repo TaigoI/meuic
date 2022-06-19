@@ -32,7 +32,21 @@ class Monitores extends Model
 
     // Definindo a relacao de FK
     // Tem que alterar depois no banco a questao do email como PK
-    public function id_aluno(){
-        return $this->hasOne(User::class,'email');
+    public function aluno(){
+        return $this->belongsTo(User::class,'id_aluno','email');
+        // Primeiro vem o que ta no arquivo e depois vem o do outro lado
     }
+
+    public function disciplina(){
+        return $this->belongsTo(Disciplina::class,'id_disciplina','id_disciplina');
+    }
+
+    /*
+
+    Basicamente, aqui é criando os relacionamentos no banco de dados para que seja possível:
+
+    Monitores::find(1)->disciplina->name_disciplina;
+
+    Retornar o nome da disciplina que está associada ao monitor de id 1.
+    */
 }

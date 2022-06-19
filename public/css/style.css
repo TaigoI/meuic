@@ -26,7 +26,6 @@ footer{
     height: 60px; 
     width: 100%; 
     bottom: 0;
-    position: fixed;
 
     font-family: var(--main-font-family);
     color: hsl(0, 0%, 62%);
