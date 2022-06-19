@@ -40,4 +40,13 @@ class Monitores extends Model
     public function disciplina(){
         return $this->belongsTo(Disciplina::class,'id_disciplina','id_disciplina');
     }
+
+    /*
+
+    Basicamente, aqui é criando os relacionamentos no banco de dados para que seja possível:
+
+    Monitores::find(1)->disciplina->name_disciplina;
+
+    Retornar o nome da disciplina que está associada ao monitor de id 1.
+    */
 }

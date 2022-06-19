@@ -28,6 +28,8 @@ class Disciplina extends Model
         'name_disciplina'
     ];
 
+
+    
     public function modulo()
     {
         return $this->belongsToMany(Modulo::class, 'modulos','id_disciplina','id_disciplina');
