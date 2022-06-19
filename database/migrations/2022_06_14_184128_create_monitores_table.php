@@ -16,7 +16,9 @@ class CreateMonitoresTable extends Migration
     {
         Schema::create('monitores', function (Blueprint $table) {
             $table->id('id_monitor');
+            $table->string('id_aluno');
             $table->foreign('id_aluno')->references('email')->on('users');
+            $table->string('id_disciplina');
             $table->foreign('id_disciplina')->references('id_disciplina')->on('disciplinas');
         });
     }

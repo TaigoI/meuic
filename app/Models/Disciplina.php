@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use \Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use \Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Disciplina extends Model
 {
@@ -30,5 +31,10 @@ class Disciplina extends Model
     public function modulo()
     {
         return $this->belongsToMany(Modulo::class, 'modulos','id_disciplina','id_disciplina');
+    }
+
+    public function monitor()
+    {
+        return $this->hasMany(Monitores::class, 'id_disciplina', 'id_disciplina');
     }
 }

@@ -40,6 +40,8 @@ class User extends Authenticatable
     
     public function monitores()
     {
-        return $this->belongsTo(Monitores::class, 'id_aluno');
+        return $this->hasOne(Monitores::class, 'id_aluno');
     }
+
+    
 }
