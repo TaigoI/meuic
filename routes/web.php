@@ -31,3 +31,7 @@ Route::get('logout', [GoogleAuthController::class, 'logOut']);
 Route::get('/monitors',function(){
     return view('manage_monitors');
 });
+
+Route::get('/disciplinas',function(){
+    return view('manage_disciplina');
+});
