@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MainDashboardController;
+use App\Http\Controllers\ManageMonitorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,12 @@ Route::get('/monitors',function(){
     return view('manage_monitors');
 });
 
-Route::get('/disciplinas',function(){
-    return view('manage_disciplina');
-});
+// Route::get('/disciplinas',function(){
+//     return view('manage_disciplina');
+// });
+
+Route::get('/disciplinas',[ManageMonitorController::class,'index']);
+
+// testes
+
+Route::get('/disciplinas/{idDisc}',[ManageMonitorController::class, 'getMonitoresDisciplina']);
