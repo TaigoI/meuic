@@ -41,7 +41,7 @@
                 
                     <div class="row">
                         <div class="col align-items-center profilepicture col-3">                                    
-                            <img class="rounded-circle m-auto" src="{{Auth::user()->picture_url}}"  width="110px" height="110px">    
+                            <img class="rounded-circle m-auto" src="{{Auth::user()->picture}}"  width="110px" height="110px"  referrerpolicy="no-referrer">    
                         </div>
                         <div class="col" style="margin-top: 20px;">
                             <div>Nome</div>
