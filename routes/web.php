@@ -42,3 +42,7 @@ Route::get('/disciplinas',[ManageMonitorController::class,'index']);
 // testes
 
 Route::get('/disciplinas/{idDisc}',[ManageMonitorController::class, 'getMonitoresDisciplina']);
+
+Route::get('/classdashboard',function(){
+    return view('class_dashboard');
+});
