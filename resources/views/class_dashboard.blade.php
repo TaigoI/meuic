@@ -222,7 +222,7 @@
                           Informação visível <b>somente para o professor.</b>
                         </div>
                     </div>
-                    <form action="/classdashboard" method="POST">
+                    <form action="/classdashboard/createAtv" method="POST">
                         @csrf
                     <div class="form-group">
                         <div class="form-floating mb-3">
