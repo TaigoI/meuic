@@ -56,8 +56,8 @@
                     </div>
 
                     <div class="col-6 px-0">
-                        <h6 id="nomeUser" class="text-left fonteCorDiferente robotoFlex">{{ $monitor["name"] }}</h6>
-                        <h7 id="emailUser" class="text-left fonteCorDiferente robotoFlex">{{ $monitor["email"] }}</h7>
+                        <h6 id="nomeUser1" class="text-left fonteCorDiferente robotoFlex">{{ $monitor["name"] }}</h6>
+                        <h7 id="emailUser2" class="text-left fonteCorDiferente robotoFlex">{{ $monitor["email"] }}</h7>
                     </div>
 
                     <div class="col-1">
@@ -135,12 +135,13 @@
                                         <input type="email" class="form-control inputsTexto2 modal-search-input" style="border-radius: 20px !important;" id="monitorEmailInput"></input>
                                         <label for="monitorEmailInput" class="align-items-center" style="color: grey;">Email do aluno</label>
                                     </div>
+                                    <div class="col-1 justify-content-start">
+                                        <a class="material-icons" style="text-decoration:none; color:#5F73A5;" type="submit" id="searchMonitorButton">search</a>
+                                    </div>
                                 </form>
                             </div>
-
-                            <div class="col-1 justify-content-start">
-                                <a class="material-icons" style="text-decoration:none; color:#5F73A5;" type="submit" id="searchMonitorButton">search</a>
-                            </div>
+                            
+                            
                             
                             <!--Esse código possibilita que a tecla enter ative a pesquisa-->
                             <script>
@@ -154,6 +155,9 @@
                             </script>
                         </div>
 
+                        @php
+                        @endphp
+
                         <!--Se o aluno existir-->
                         <div class="px-1 py-2">
                             <div class="row py-2 d-flex align-items-center">
@@ -163,8 +167,8 @@
                                     <div id="emailUser" class="text-left"></div>
                                 </div>
 
-                                <div class="col-2 d-flex justify-content-end" id="teste">                                  
-                                    <button class="btn btn-dark btn-sm rounded-pill add-monitor-button" type="button" data-bs-toggle="modal" data-bs-target="#addMonitorModal">
+                                <div class="col-2 d-flex justify-content-end">                                  
+                                    <button class="btn btn-dark btn-sm rounded-pill add-monitor-button" id="addMonitorButton" type="submit" onclick="javascript:add('<?php echo session('idDisc') ?>')" >
                                         Adicionar
                                     </button>
                                 </div>

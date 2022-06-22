@@ -36,3 +36,4 @@ Route::get('/disciplinas',[ManageMonitorController::class,'index']);
 Route::post('/disciplinas',[ManageMonitorController::class, 'getMonitoresDisciplina']);
 Route::post('/disciplinas/delete/{email}',[ManageMonitorController::class, 'destroy'])->name('monitor_delete');
 Route::get('/disciplinas/find/{email}',[ManageMonitorController::class, 'getUserByEmail'])->name('monitor_find');
+Route::get('/disciplinas/insert/{email}/{id_disciplina}',[ManageMonitorController::class, 'insert'])->name('monitor_insert');
