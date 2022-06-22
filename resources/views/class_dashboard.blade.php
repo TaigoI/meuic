@@ -12,6 +12,8 @@
                 </a>
             </div>
             <div class="col-10 col-md-11">
+                <!-- Tratar o retorno do save e jogar aqui -->
+                
                 <h4 class="m-0 mb-1 row discipline-name">
                     Atividades 
                 </h4>
@@ -220,34 +222,38 @@
                           Informação visível <b>somente para o professor.</b>
                         </div>
                     </div>
-
+                    <form action="/classdashboard" method="POST">
+                        @csrf
                     <div class="form-group">
                         <div class="form-floating mb-3">
-                            <textarea class="form-control inputsTexto2 inputsTexto" placeholder="Description" style="border-radius: 20px !important;" id="floatingTextarea"></textarea>
+                            <textarea class="form-control inputsTexto2 inputsTexto" placeholder="Description" style="border-radius: 20px !important;" name="desc_atividade"></textarea>
                             <label for="floatingTextarea" class="align-items-center" style="color: grey;">Descrição da atividade</label>
                           </div>
                     
                         <div class="form-floating mb-3">
-                            <input type="date" class="form-control inputsTexto2 inputsTexto" style="border-radius: 20px !important;" id="dataInput"
+                            <input type="date" class="form-control inputsTexto2 inputsTexto" style="border-radius: 20px !important;" name="data"
                 placeholder="usuario">
                             <label for="dataInput" class="align-items-center" style="color: grey;">Data de realização</label>
                         </div>
                     
                         <div class="form-floating mb">
-                            <input type="time" class="form-control inputsTexto2 inputsTexto" style="border-radius: 20px !important;" id="timeInput"
+                            <input type="time" class="form-control inputsTexto2 inputsTexto" style="border-radius: 20px !important;" name="tempo_gasto"
                 placeholder="usuario">
                             <label for="timeInput" class="align-items-center" style="color: grey;">Tempo gasto</label>
                         </div>
                     </div>
+                    
                 </div>
 
                 <div class="d-flex w-100 justify-content-center align-items-center mb-3 py-4">
-                    <button type="submit" class="buttonEntrar btn btn-primary" class="close btn" data-dismiss="modal">Registrar</button>
+                    <button type="submit" class="buttonEntrar btn btn-primary" >Registrar</button>
                 </div>
+                </form>
                 
             </div>
         </div>
     </div>
     </div>
+
     <!--Fim do modal-->
 @stop
