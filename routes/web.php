@@ -20,8 +20,6 @@ use App\Http\Controllers\ManageMonitorController;
 Route::get('/', [MainDashboardController::class, 'index']);
 Route::get('/home', [MainDashboardController::class, 'index']);
 
-Route::get('/teste', [MainDashboardController::class, 'eloquentTest']);
-
 
 Route::get('/profile', [ProfileController::class, 'getView']);
 
@@ -29,9 +27,6 @@ Route::get('auth/google', [GoogleAuthController::class, 'redirect']);
 Route::get('callbacks/google', [GoogleAuthController::class, 'handleCallback']);
 Route::get('logout', [GoogleAuthController::class, 'logOut']);
 
-Route::get('/monitors',function(){
-    return view('manage_monitors');
-});
 
 // Route::get('/disciplinas',function(){
 //     return view('manage_disciplina');
@@ -41,4 +36,5 @@ Route::get('/disciplinas',[ManageMonitorController::class,'index']);
 
 // testes
 
-Route::get('/disciplinas/{idDisc}',[ManageMonitorController::class, 'getMonitoresDisciplina']);
+Route::post('/disciplinas',[ManageMonitorController::class, 'getMonitoresDisciplina']);
+Route::post('/disciplinas/{email}',[ManageMonitorController::class, 'destroy']);
