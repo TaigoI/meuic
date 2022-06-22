@@ -33,8 +33,6 @@ Route::get('logout', [GoogleAuthController::class, 'logOut']);
 // });
 
 Route::get('/disciplinas',[ManageMonitorController::class,'index']);
-
-// testes
-
 Route::post('/disciplinas',[ManageMonitorController::class, 'getMonitoresDisciplina']);
-Route::post('/disciplinas/{email}',[ManageMonitorController::class, 'destroy']);
+Route::post('/disciplinas/delete/{email}',[ManageMonitorController::class, 'destroy'])->name('monitor_delete');
+Route::get('/disciplinas/find/{email}',[ManageMonitorController::class, 'getUserByEmail'])->name('monitor_find');

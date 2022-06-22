@@ -13,10 +13,10 @@ class ManageMonitorController extends Controller
     public function index(){
         // Retornar a lista de disciplinas
         $listadisciplinas = Disciplina::all();
-        $query = Monitores::with('aluno')->get();
-        //$listadisciplinas = Disciplina::with('monitor')->get();
     
 
+        /* 
+        $query = Monitores::with('aluno')->get();
         $disciplina_monitor_map = collect();
 
         foreach ($query as $item) {            
@@ -25,10 +25,10 @@ class ManageMonitorController extends Controller
 
         foreach ($query as $item) {            
             $disciplina_monitor_map[$item->id_disciplina]->push($item->aluno);           
-        }
+        } */
 
-        session()->put('idDisc', '');
-        return view('manage_monitor', compact('listadisciplinas', 'disciplina_monitor_map'));
+        session()->put('idDisc', null);
+        return view('manage_monitor', compact('listadisciplinas'));
     }
 
     private function getListaDisciplinas(){
@@ -50,6 +50,7 @@ class ManageMonitorController extends Controller
             array_push($listaInfos,$listaUserInfo);
         }
         //dd($listaInfos);
+        
         $listadisciplinas = $this->getListaDisciplinas();
         
         return view('manage_monitor', compact('listaInfos', 'listadisciplinas'));
@@ -63,27 +64,26 @@ class ManageMonitorController extends Controller
         
         $usuario = User::find($email);
         $usuarioInfo = array("name"=>$usuario->name,"email"=>$usuario->email,"picture"=>$usuario->picture);
+        
         return $usuarioInfo;
     }
 
     // Excluir monitor
     public function destroy($email){
+   
         Monitores::where('id_aluno',$email)->delete();
 
-        $listadisciplinas = $this->getListaDisciplinas();
+        //$listadisciplinas = $this->getListaDisciplinas();
         
-        return view('manage_monitor', compact('listadisciplinas'));
+        return redirect('/disciplinas');
     }
 
     // Add monitor
-    public function insert($email,$id_disciplina){
+    public function insert($email, $id_disciplina){
         Monitores::create([
             "id_aluno" => $email,
             "id_disciplina" => $id_disciplina
         ]);
     }
-
-
-
     
 }
