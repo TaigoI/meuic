@@ -6,6 +6,7 @@ use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MainDashboardController;
 use App\Http\Controllers\ManageMonitorController;
+use App\Http\Controllers\ClassTimetableController;
 use App\Http\Controllers\ActivityController;
 
 /*
@@ -26,9 +27,11 @@ Route::get('/home', [MainDashboardController::class, 'index'])->name("home");
 Route::get('/profile', [ProfileController::class, 'getView']);
 Route::post('/profile', [ProfileController::class, 'updateProfile']);
 
+
 Route::get('auth/google', [GoogleAuthController::class, 'redirect']);
 Route::get('callbacks/google', [GoogleAuthController::class, 'handleCallback']);
 Route::get('logout', [GoogleAuthController::class, 'logOut']);
+
 
 Route::get('/disciplinas',[ManageMonitorController::class,'index']);
 Route::post('/disciplinas',[ManageMonitorController::class, 'getMonitoresDisciplina']);
@@ -41,3 +44,6 @@ Route::get('/disciplinas/{idDisc}',[ManageMonitorController::class, 'getMonitore
 Route::get('/activities',[ActivityController::class, 'index']);
 Route::post('/activities/create', [ActivityController::class, 'insert']);
 
+
+Route::get('/timetable', [ClassTimetableController::class, 'notFound']);
+Route::get('/timetable/{idDisciplina}', [ClassTimetableController::class, 'index']);
