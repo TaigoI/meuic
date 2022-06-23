@@ -25,6 +25,7 @@ Route::get('/teste', [MainDashboardController::class, 'eloquentTest']);
 
 
 Route::get('/profile', [ProfileController::class, 'getView']);
+Route::post('/profile', [ProfileController::class, 'updateProfile']);
 
 Route::get('auth/google', [GoogleAuthController::class, 'redirect']);
 Route::get('callbacks/google', [GoogleAuthController::class, 'handleCallback']);
@@ -51,3 +52,4 @@ Route::get('/disciplinas/{idDisc}',[ManageMonitorController::class, 'getMonitore
 Route::get('/classdashboard',[ActivitieController::class, 'index']);
 
 Route::post('/classdashboard/createAtv', [ActivitieController::class, 'insert']);
+

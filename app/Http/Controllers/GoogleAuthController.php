@@ -18,6 +18,15 @@ class GoogleAuthController extends Controller
 			->redirect();
     }
 
+	private function isUserSignedIn($email){
+		if(User::find($email) == null){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+
 	public function handleCallback()
 	{
 		$googleUser = Socialite::driver('google')->user();
@@ -33,7 +42,12 @@ class GoogleAuthController extends Controller
         );
 
 		Auth::login($user, $remember = true);
-		return redirect('/home');
+		if (!$this->isUserSignedIn( $googleUser->getEmail())){
+			$page_title = ["page_title" => "Complete seu cadastro"];
+		return view('complete_profile', compact('page_title'));
+		} else{
+			return redirect('/');
+		}		
 	}
 
 	public function logOut()
