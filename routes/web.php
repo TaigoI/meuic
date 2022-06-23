@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\ActivitieController;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MainDashboardController;
 use App\Http\Controllers\ManageMonitorController;
+use App\Http\Controllers\ActivityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,9 +36,6 @@ Route::get('/monitors',function(){
     return view('manage_monitors');
 });
 
-Route::get('/data', function(){
-    return view('print_data');
-});
 
 // Route::get('/disciplinas',function(){
 //     return view('manage_disciplina');
@@ -49,7 +47,7 @@ Route::get('/disciplinas',[ManageMonitorController::class,'index']);
 
 Route::get('/disciplinas/{idDisc}',[ManageMonitorController::class, 'getMonitoresDisciplina']);
 
-Route::get('/classdashboard',[ActivitieController::class, 'index']);
+Route::get('/activities',[ActivityController::class, 'index']);
 
-Route::post('/classdashboard/createAtv', [ActivitieController::class, 'insert']);
+Route::post('/activities/create', [ActivityController::class, 'insert']);
 

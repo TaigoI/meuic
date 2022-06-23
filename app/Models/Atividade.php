@@ -25,7 +25,7 @@ class Atividade extends Model
 
     // Evitar que o usuario acesse diretamente o userRole
     protected $fillable = [
-        'id_atividade',
+        
         'id_monitor',
         'desc_atividade',
         'dia_atividade',

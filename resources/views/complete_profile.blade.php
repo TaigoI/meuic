@@ -4,20 +4,8 @@
 @endif
 @section('page content')
 <div class="container">
-    @if (Session::has('success'))
-        <div class="alert alert-success" role="alert">
-            <i class="material-icons" style="font-size: 1.5em;">info</i>
-            <strong>Deu certo!</strong> {{ session('success') }}
-        </div>
-    @endif
-
-    @if (Session::has('error'))
-        <div class="alert alert-danger" role="alert">
-            <i class="material-icons" style="font-size: 1.5em;">info</i>
-            <strong>Deu ruim!</strong> {{ session('error') }}
-        </div>
-    @endif
-
+    
+    @include('partials/feedback_basic_alert')
     
     <div class="row align-items-center py-4">
         <div class="col-2" style="width: min-content;">

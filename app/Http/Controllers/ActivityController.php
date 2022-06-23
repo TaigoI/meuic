@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use App\Models\Monitores;
 
-class ActivitieController extends Controller
+class ActivityController extends Controller
 {
     //
 
@@ -29,7 +29,7 @@ class ActivitieController extends Controller
         $tempo = $request->get('tempo_gasto');
         list($hour,$minute)=explode(":", $tempo);
 
-        Atividade::create([
+        $created = Atividade::create([
             "id_monitor" => Auth::user()->email,
             "desc_atividade" => $request->get('desc_atividade'),
             "dia_atividade" => $day,
@@ -37,11 +37,13 @@ class ActivitieController extends Controller
             "ano_atividade" => $year,
             "hora_gasto" => $hour,
             "min_gasto" =>$minute,
-            'data_completa' =>$data
-            
+            'data_completa' =>$data            
         ]);
 
-        return back();        // return view('class_dashboard');
+        if($created){session()->flash('success', 'Atividade cadastrada!');}
+        else{session()->flash('error', 'Opa! Algo deu errado. Tente de novo mais tarde.');}
+
+        return back();        // return view('activities');
     }
 
 }

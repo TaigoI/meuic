@@ -19,7 +19,7 @@ class AtividadesSeeder extends Seeder
     {
         //
         DB::table('atividades')->insert([
-            'id_monitor' => 'testes@ic.ufal.br',
+            'id_monitor' => 'felipe@ic.ufal.br',
             'desc_atividade' => "teste de atividade" ,
             'hora_gasto' => 4,
             'min_gasto' => 20,
