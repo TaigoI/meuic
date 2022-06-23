@@ -18,24 +18,25 @@ class ProfileController extends Controller
 		return view('complete_profile');
     }
 
-    public function updateProfile(Request $request){
-        
-        $matricula = $request->matriculaInput;
-        $teacher_status = $request->teacherCheckbox;
+	public function update(Request $request)
+    {
+        $data = $request->all();
+		$status = Auth::user()->teacher_status;
 
-        $user = User::find(Auth::user()->email);
-        
-        if($teacher_status != null){
-            $updated = $user->update(["matricula" => $matricula, "teacher_status" => 'REQUESTED']);
-        } else{
-            $updated = $user->update(["matricula" => $matricula]);
-        }
+		if($status == "NO" && isset($data['checkbox'])){
+			$status = "REQUESTED";
+		}
 
-        if($updated){
-            session()->flash('success', 'Informações atualizadas com sucesso!');
-        }else{
-            session()->flash('error', 'Opa! Algo deu errado. Tente de novo mais tarde.');
-        }
-        return redirect('/profile');
+		User::updateOrCreate(
+			['email' => Auth::user()->email],
+			[
+				'matricula'      => $data['matricula'],
+				'teacher_status' => $status,
+			],
+		);
+    
+    
+        session()->flash('success', 'Informações atualizadas com sucesso!');
+		return redirect('/profile')->with('message', 'TESTE');
     }
 }

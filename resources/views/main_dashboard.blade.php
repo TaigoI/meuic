@@ -51,7 +51,7 @@
                                     <div class="col-md-4 col-lg-3 pt-2 pb-3" id={{$id_disciplina}}>
                                         <div class="card dashboard-card slot-2 <?php echo $colors[rand(0,3)]?> ">
                                             <h5 class="card-title">{{ $disciplinas[$modulo][$id_disciplina] }}</h5>                    
-                                            <a class="stretched-link"></a>
+                                            <a class="stretched-link" href="/timetable/{{$id_disciplina}}"></a>
                                         </div>
                                     </div>
                                     
@@ -86,7 +86,7 @@
                         <div class="col-md-4 col-lg-3 pt-2 pb-3" id={{$id_disciplina}}>
                             <div class="card dashboard-card slot-2 <?php echo $colors[rand(0,3)]?> ">
                                 <h5 class="card-title">{{ $disciplinas[$modulo][$id_disciplina] }}</h5>                    
-                                <a class="stretched-link"></a>
+                                <a class="stretched-link" href="/timetable/{{$id_disciplina}}"></a>
                             </div>
                         </div>
                     @endforeach
