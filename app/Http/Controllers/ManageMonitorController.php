@@ -6,6 +6,7 @@ use App\Models\Disciplina;
 use App\Models\Monitores;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ManageMonitorController extends Controller
 {
@@ -13,7 +14,6 @@ class ManageMonitorController extends Controller
     public function index(){
         // Retornar a lista de disciplinas
         $listadisciplinas = Disciplina::all();
-    
 
         /* 
         $query = Monitores::with('aluno')->get();
@@ -80,6 +80,10 @@ class ManageMonitorController extends Controller
 
     // Add monitor
     public function insert($email, $id_disciplina){
+        
+        $user = User::find(Auth::user()->email);
+        $user->update();
+        
         Monitores::create([
             "id_aluno" => $email,
             "id_disciplina" => $id_disciplina

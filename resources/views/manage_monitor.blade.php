@@ -56,8 +56,8 @@
                     </div>
 
                     <div class="col-6 px-0">
-                        <h6 id="nomeUser1" class="text-left fonteCorDiferente robotoFlex">{{ $monitor["name"] }}</h6>
-                        <h7 id="emailUser2" class="text-left fonteCorDiferente robotoFlex">{{ $monitor["email"] }}</h7>
+                        <h6 id="name" class="text-left fonteCorDiferente robotoFlex">{{ $monitor["name"] }}</h6>
+                        <h7 id="email" class="text-left fonteCorDiferente robotoFlex">{{ $monitor["email"] }}</h7>
                     </div>
 
                     <div class="col-1">
@@ -101,7 +101,7 @@
         @endif
 
         <div class="d-flex align-items-center justify-content-center py-4">
-            <button class="add-monitor-button btn btn-primary rounded-pill" type="button" data-bs-toggle="modal" data-bs-target="#addMonitorModal">
+            <button class="add-monitor-button btn btn-primary rounded-pill" type="button" data-bs-toggle="modal" data-bs-target="#addMonitorModal" onclick="javascript:cleanSearchUserForm()">
                 <div class="material-icons">
                     add
                 </div>
@@ -128,35 +128,26 @@
                     </div>
 
                     <div class="">
-                        <div class="row d-flex justify-content-center align-items-center py-2">
-                            <div class="col-11">
-                                <form action="javascript:search();">
-                                    <div class="form-floating mb-3">
-                                        <input type="email" class="form-control inputsTexto2 modal-search-input" style="border-radius: 20px !important;" id="monitorEmailInput"></input>
-                                        <label for="monitorEmailInput" class="align-items-center" style="color: grey;">Email do aluno</label>
-                                    </div>
-                                    <div class="col-1 justify-content-start">
-                                        <a class="material-icons" style="text-decoration:none; color:#5F73A5;" type="submit" id="searchMonitorButton">search</a>
-                                    </div>
-                                </form>
-                            </div>
+                        <div class="d-flex justify-content-center align-items-center py-2">
                             
-                            
-                            
-                            <!--Esse código possibilita que a tecla enter ative a pesquisa-->
-                            <script>
-                                var input = document.getElementById("monitorEmailInput");
-                                input.addEventListener("keyup", function(event) {
-                                    if (event.keyCode === 13) {
-                                        event.preventDefault();
-                                        document.getElementById("searchMonitorButton").click();
-                                    }
-                                });
-                            </script>
-                        </div>
+                            <form action="javascript:search();" name="searchUserForm">
+                                <div class="row">
+                                    <div class="col-11">
+                                        <div class="form-floating mb-3">
+                                            <input type="email" class="form-control inputsTexto2 modal-search-input" style="border-radius: 20px !important;" id="monitorEmailInput"></input>
+                                            <label for="monitorEmailInput" class="align-items-center" style="color: grey;">Email do aluno</label>
+                                        </div>
+                                    </div>     
+                                    <div class="col-1 d-flex justify-content-center align-items-center" id="searchMonitorButton">
+                                        <a class="btn" onclick="document.forms['searchUserForm'].submit();" >
+                                            <i class="material-icons" style="text-decoration:none; color:#5F73A5;">search</i>
+                                        </a>
+                                    </div> 
+                                </div>
+                            </form>
 
-                        @php
-                        @endphp
+                            
+                        </div>
 
                         <!--Se o aluno existir-->
                         <div class="px-1 py-2">
@@ -167,12 +158,13 @@
                                     <div id="emailUser" class="text-left"></div>
                                 </div>
 
-                                <div class="col-2 d-flex justify-content-end">                                  
-                                    <button class="btn btn-dark btn-sm rounded-pill add-monitor-button" id="addMonitorButton" type="submit" onclick="javascript:add('<?php echo session('idDisc') ?>')" >
-                                        Adicionar
-                                    </button>
+                                <div style="display: none;" id="ButtonDiv">
+                                    <div class="col-2 d-flex justify-content-end">                                  
+                                        <button class="btn btn-dark btn-sm rounded-pill add-monitor-button" id="addMonitorButton" type="submit" onclick="javascript:add('<?php echo session('idDisc') ?>')" >
+                                            Adicionar
+                                        </button>
+                                    </div>
                                 </div>
-                                
                             </div>
                         </div>
 

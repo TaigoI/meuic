@@ -1,3 +1,4 @@
+
 function search() {
     var input = document.getElementById("monitorEmailInput").value;
     var nameID = document.getElementById("nomeUser");
@@ -10,8 +11,17 @@ function search() {
     req.onload = function () {
         var monitores = req.response;
 
-        nameID.innerHTML = "<h7 id='alo'>" + monitores.name + "</h7>";
-        emailID.innerHTML = "<p id='returnedEmail'>" + monitores.email + "</p>";
+        console.log(req.response);
+        
+        if(monitores != null){
+            window.parent.dynamicRenderAddButton();
+            nameID.innerHTML = "<h7 id='returnedName'>" + monitores.name + "</h7>";
+            emailID.innerHTML = "<p id='returnedEmail'>" + monitores.email + "</p>";
+        } else{
+            window.parent.dynamicRenderRemoveButton();
+            nameID.innerHTML = "";
+            emailID.innerHTML = "";
+        }        
     };
 
     req.send(null); 
