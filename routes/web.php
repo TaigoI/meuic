@@ -23,11 +23,8 @@ Route::get('/teste', [MainDashboardController::class, 'eloquentTest']);
 
 
 Route::get('/profile', [ProfileController::class, 'getView']);
+Route::post('/profile', [ProfileController::class, 'updateProfile']);
 
 Route::get('auth/google', [GoogleAuthController::class, 'redirect']);
 Route::get('callbacks/google', [GoogleAuthController::class, 'handleCallback']);
 Route::get('logout', [GoogleAuthController::class, 'logOut']);
-
-Route::get('/monitors',function(){
-    return view('manage_monitors');
-});
