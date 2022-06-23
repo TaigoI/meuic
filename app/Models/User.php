@@ -25,16 +25,22 @@ class User extends Authenticatable
     */
     public $incrementing = false;
     protected $keyType = 'string';
-    public $timestamps = false;
+    //public $timestamps = false;
     
 
     // Evitar que o usuario acesse diretamente o userRole
     protected $fillable = [
-        'ID',
+        'google_id',
         'email',
         'matricula',
         'name',
         'picture',
+		'user_role',
+		'teacher_status'
+    ];
+
+	protected $hidden = [
+        'remember_token',
     ];
 
     

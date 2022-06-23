@@ -41,6 +41,9 @@ class Monitores extends Model
         return $this->belongsTo(Disciplina::class,'id_disciplina','id_disciplina');
     }
 
+    public function atividades(){
+        return $this->hasMany(Atividade::class,'id_monitor','id_aluno');
+    }
     /*
 
     Basicamente, aqui é criando os relacionamentos no banco de dados para que seja possível:

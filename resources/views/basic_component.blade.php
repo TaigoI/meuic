@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-<?php 
-$role = "monitor" //papel do usuario no sistema
-?>
 <html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
@@ -30,40 +27,78 @@ $role = "monitor" //papel do usuario no sistema
         <div class="header fixed-top d-flex p-4 px-md-5 mb-3 bg-light">
             <!--Meu@IC logo-->
             <div class="header-logo d-md-flex my-auto flex-grow-1">
-                <h2 class="mr-3 p-2">Meu@IC</h2>
+				<a style="text-decoration:none; color:black;" href="/">
+                	<h2 class="mr-3 p-2">Meu@IC</h2>
+				</a>
             </div>  
             <!--End of Meu@IC logo--> 
 
-            <div class="header-buttons d-grid gap-2 d-flex flex-row justify-content-end align-items-center">
-                <!--Botoes Header-->
-                @if(session()->has('ID'))
-                    <button class="btn rounded-pill topbar_button blue" type="button">
-                        <div class="material-icons">
-                            add_task
-                        </div>
-                        &nbsp;Atividades
-                    </button>
+			<!--Botoes Usuario Logado-->
+			@if(Auth::check())
+				<div class="header-buttons d-grid gap-2 d-flex flex-row justify-content-end align-items-center">
+					<!--Botoes Header-->
+					@if(Auth::user()->user_role == 'T')
+						<button class="btn rounded-pill topbar_button darkblue" type="button">
+							<div class="material-icons">
+								school
+							</div>
+							&nbsp;Disciplinas
+						</button>
+					@endif	
 
-                    <button class="btn rounded-pill topbar_button dark" type="button">
-                        <div class="material-icons">
-                            event
-                        </div>
-                        &nbsp;Agendar
-                    </button>
-                @else
-                    <button class="btn rounded-pill topbar_button white" type="button">
-                        <div class="px-1">
-                            <img class="rounded-circle m-auto" src="https://logopng.com.br/logos/google-37.png" width="20" height="20"> 
-                        </div>
-                        &nbsp;Login with Google
-                    </button>
-                @endif
-                <!--End of Botoes Header-->
-                
-                <!--Profile picture icon-->
-                <img class="rounded-circle m-auto" src="https://static1.purepeople.com.br/articles/0/32/59/50/@/3678243-jade-picon-volta-a-comentar-polemica-com-624x600-2.jpg" width="40" height="40"> 
-                <!--End of Profile picture icon-->            
-            </div>          
+					@if(Auth::user()->user_role == 'T' or Auth::user()->user_role == 'M')
+						<a class="btn rounded-pill topbar_button blue" type="button" href="/activities">
+							<div class="material-icons">
+								add_task
+							</div>
+							&nbsp;Atividades
+						</a>
+					@endif
+					
+					@if(Auth::user()->user_role == 'S' or Auth::user()->user_role == 'M')
+					<button class="btn rounded-pill topbar_button dark" type="button">
+						<div class="material-icons">
+							event
+						</div>
+						&nbsp;Agendar
+					</button>
+					@endif
+					
+					@if(Request::is('profile'))
+						<form method="GET" action="/logout">
+							<button class="btn rounded-pill topbar_button dark" type="submit">
+								<div class="material-icons">
+									logout
+								</div>
+								&nbsp;Sair
+							</button>
+						</form>
+					@endif
+					<!--End of Botoes Header-->
+
+					<!--Profile picture icon-->
+					@if(!Request::is('profile'))
+						<a href="/profile">
+							<img class="rounded-circle m-auto" src="{{Auth::user()->picture}}" width="40" height="40"  referrerpolicy="no-referrer"> 
+						</a>
+					@endif
+					<!--End of Profile picture icon-->            
+				</div>      
+			@endif
+
+			<!--Botao Login-->
+			@if(!Auth::check())
+				<form method="GET" action="/auth/google">
+					<div class="header-buttons d-grid gap-2 d-flex flex-row justify-content-end align-items-center">
+						<button class="btn rounded-pill topbar_button white" type="submit">
+							<div class="px-1">
+								<img class="rounded-circle m-auto" src="https://logopng.com.br/logos/google-37.png" width="20" height="20"> 
+							</div>
+							&nbsp;Login with Google
+						</button>        
+					</div>
+				</form>
+			@endif
         </div>
         <!--End of Header-->
 
@@ -90,6 +125,6 @@ $role = "monitor" //papel do usuario no sistema
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <!--End of Bootstrap dependencies-->
+       <!--End of Bootstrap dependencies-->
     </body>
 </html>
