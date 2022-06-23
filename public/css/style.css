@@ -476,3 +476,33 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     align-items: center;
 }
 /* Ends: Complete Profile Specifics */
+
+/* Begins: Manage Monitors Specifics */
+.discipline-monitor-page{
+    width: 50%;
+    align-items: center;
+    justify-content: center;
+    margin-left: 25%;
+}
+
+.discipline-dropdown{
+    width: 700px;
+    height: 60px;
+    border-color: #565555 !important;
+    border-radius: 100px;
+}
+
+.add-monitor-button{
+    display: flex !important;
+    background-color: #5F73A5 !important;
+    border-color: #5F73A5 !important;
+    align-content: center !important;
+	align-items: center !important;
+    
+}
+
+.modal-search-input{
+    height: 100px;
+    border-color: #5F73A5 !important;
+}
+/* Ends: Manage Monitors Specifics */

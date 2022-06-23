@@ -18,20 +18,22 @@ class UserSeeder extends Seeder
     {
         //
         DB::table('users')->insert([
-            'ID' => 1,
+            'google_id' => null,
             'email' => 'testes@ic.ufal.br',
             'matricula'=> 1234,
             'name' => "teste",
             'picture' => Str::random(10),
-            'user_role' => 'monitor'
+            'teacher_status' => 'NO',
+            'user_role' => 'M'
             
         ],[
-            'ID' => 2,
+            'google_id' => null,
             'email' => 'felipe@ic.ufal.br',
             'matricula'=> 4321,
             'name' => "felipe",
             'picture' => Str::random(10),
-            'user_role' => 'monitor'
+            'teacher_status' => 'NO',
+            'user_role' => 'M'
             
         ]);
     }

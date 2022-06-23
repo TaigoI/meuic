@@ -5,30 +5,7 @@
 -- Dumped from database version 12.11 (Ubuntu 12.11-0ubuntu0.20.04.1)
 -- Dumped by pg_dump version 12.11 (Ubuntu 12.11-0ubuntu0.20.04.1)
 
--- Started on 2022-06-08 22:59:37 -03
-
-SET statement_timeout = 0;
-SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SELECT pg_catalog.set_config('search_path', '', false);
-SET check_function_bodies = false;
-SET xmloption = content;
-SET client_min_messages = warning;
-SET row_security = off;
-
---
--- TOC entry 3005 (class 1262 OID 18922)
--- Name: meu_ic; Type: DATABASE; Schema: -; Owner: postgres
---
-
-CREATE DATABASE meu_ic WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'pt_BR.UTF-8' LC_CTYPE = 'pt_BR.UTF-8';
-
-
-ALTER DATABASE meu_ic OWNER TO postgres;
-
-\connect meu_ic
+-- Started on 2022-06-22 12:04:55 -03
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -46,77 +23,38 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- TOC entry 207 (class 1259 OID 18957)
+-- TOC entry 202 (class 1259 OID 27930)
 -- Name: disciplinas; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.disciplinas (
-    "id_disciplina" character varying(255) NOT NULL,
-    "name_disciplina" character varying(255) NOT NULL
+    id_disciplina character varying(255) NOT NULL,
+    name_disciplina character varying(255) NOT NULL
 );
 
 
 ALTER TABLE public.disciplinas OWNER TO postgres;
 
 --
--- TOC entry 203 (class 1259 OID 18925)
--- Name: migrations; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.migrations (
-    id integer NOT NULL,
-    migration character varying(255) NOT NULL,
-    batch integer NOT NULL
-);
-
-
-ALTER TABLE public.migrations OWNER TO postgres;
-
---
--- TOC entry 202 (class 1259 OID 18923)
--- Name: migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.migrations_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.migrations_id_seq OWNER TO postgres;
-
---
--- TOC entry 3006 (class 0 OID 0)
--- Dependencies: 202
--- Name: migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.migrations_id_seq OWNED BY public.migrations.id;
-
-
---
--- TOC entry 209 (class 1259 OID 18975)
+-- TOC entry 205 (class 1259 OID 27941)
 -- Name: modulos; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.modulos (
-    "id_modulo" bigint NOT NULL,
+    id_modulo bigint NOT NULL,
     modulo character varying(255) NOT NULL,
-    "id_disciplina" character varying(255) NOT NULL
+    id_disciplina character varying(255) NOT NULL
 );
 
 
 ALTER TABLE public.modulos OWNER TO postgres;
 
 --
--- TOC entry 208 (class 1259 OID 18973)
+-- TOC entry 206 (class 1259 OID 27947)
 -- Name: modulos_id_modulo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE SEQUENCE public."modulos_id_modulo_seq"
+CREATE SEQUENCE public.modulos_id_modulo_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -124,57 +62,32 @@ CREATE SEQUENCE public."modulos_id_modulo_seq"
     CACHE 1;
 
 
-ALTER TABLE public."modulos_id_modulo_seq" OWNER TO postgres;
+ALTER TABLE public.modulos_id_modulo_seq OWNER TO postgres;
 
 --
--- TOC entry 3007 (class 0 OID 0)
--- Dependencies: 208
+-- TOC entry 2987 (class 0 OID 0)
+-- Dependencies: 206
 -- Name: modulos_id_modulo_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
-ALTER SEQUENCE public."modulos_id_modulo_seq" OWNED BY public.modulos."id_modulo";
+ALTER SEQUENCE public.modulos_id_modulo_seq OWNED BY public.modulos.id_modulo;
 
 
 --
--- TOC entry 204 (class 1259 OID 18931)
--- Name: users; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.users (
-    "ID" character varying(255) NOT NULL,
-    email character varying(255) NOT NULL,
-    matricula character varying(255) NOT NULL,
-    name character varying(255) NOT NULL,
-    picture character varying(255) NOT NULL,
-    "user_role" character varying(255) NOT NULL
-);
-
-
-ALTER TABLE public.users OWNER TO postgres;
-
---
--- TOC entry 2853 (class 2604 OID 18928)
--- Name: migrations id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.migrations ALTER COLUMN id SET DEFAULT nextval('public.migrations_id_seq'::regclass);
-
-
---
--- TOC entry 2854 (class 2604 OID 18978)
+-- TOC entry 2847 (class 2604 OID 27956)
 -- Name: modulos id_modulo; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.modulos ALTER COLUMN "id_modulo" SET DEFAULT nextval('public."modulos_id_modulo_seq"'::regclass);
+ALTER TABLE ONLY public.modulos ALTER COLUMN id_modulo SET DEFAULT nextval('public.modulos_id_modulo_seq'::regclass);
 
 
 --
--- TOC entry 2997 (class 0 OID 18957)
--- Dependencies: 207
+-- TOC entry 2979 (class 0 OID 27930)
+-- Dependencies: 202
 -- Data for Name: disciplinas; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.disciplinas ("id_disciplina", "name_disciplina") FROM stdin;
+COPY public.disciplinas (id_disciplina, name_disciplina) FROM stdin;
 COMP360	LÓGICA PARA COMPUTAÇÃO
 COMP361	COMPUTAÇÃO, SOCIEDADE E ÉTICA
 COMP362	MATEMÁTICA DISCRETA
@@ -255,26 +168,12 @@ COMP414	TÓPICOS EM FÍSICA PARA COMPUTAÇÃO 3
 
 
 --
--- TOC entry 2995 (class 0 OID 18925)
--- Dependencies: 203
--- Data for Name: migrations; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.migrations (id, migration, batch) FROM stdin;
-1	2014_10_12_000000_create_users_table	1
-2	2019_12_14_000001_create_personal_access_tokens_table	1
-3	2022_06_07_003923_create_disciplinas_table	1
-4	2022_06_07_003931_create_modulos_table	2
-\.
-
-
---
--- TOC entry 2999 (class 0 OID 18975)
--- Dependencies: 209
+-- TOC entry 2980 (class 0 OID 27941)
+-- Dependencies: 205
 -- Data for Name: modulos; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.modulos ("id_modulo", modulo, "id_disciplina") FROM stdin;
+COPY public.modulos (id_modulo, modulo, id_disciplina) FROM stdin;
 156	1º PERIODO	COMP360
 157	1º PERIODO	COMP361
 158	1º PERIODO	COMP362
@@ -355,99 +254,43 @@ COPY public.modulos ("id_modulo", modulo, "id_disciplina") FROM stdin;
 
 
 --
--- TOC entry 2996 (class 0 OID 18931)
--- Dependencies: 204
--- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.users ("ID", email, matricula, name, picture, "user_role") FROM stdin;
-\.
-
-
---
--- TOC entry 3008 (class 0 OID 0)
--- Dependencies: 202
--- Name: migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.migrations_id_seq', 4, true);
-
-
---
--- TOC entry 3009 (class 0 OID 0)
--- Dependencies: 208
+-- TOC entry 2988 (class 0 OID 0)
+-- Dependencies: 206
 -- Name: modulos_id_modulo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public."modulos_id_modulo_seq"', 1, false);
+SELECT pg_catalog.setval('public.modulos_id_modulo_seq', 1, false);
 
 
 --
--- TOC entry 2864 (class 2606 OID 18964)
+-- TOC entry 2849 (class 2606 OID 27958)
 -- Name: disciplinas disciplinas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.disciplinas
-    ADD CONSTRAINT disciplinas_pkey PRIMARY KEY ("id_disciplina");
+    ADD CONSTRAINT disciplinas_pkey PRIMARY KEY (id_disciplina);
 
 
 --
--- TOC entry 2856 (class 2606 OID 18930)
--- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.migrations
-    ADD CONSTRAINT migrations_pkey PRIMARY KEY (id);
-
-
---
--- TOC entry 2866 (class 2606 OID 18983)
+-- TOC entry 2851 (class 2606 OID 27962)
 -- Name: modulos modulos_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.modulos
-    ADD CONSTRAINT modulos_pkey PRIMARY KEY ("id_modulo");
+    ADD CONSTRAINT modulos_pkey PRIMARY KEY (id_modulo);
 
 
 --
--- TOC entry 2858 (class 2606 OID 18940)
--- Name: users users_email_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_email_unique UNIQUE (email);
-
-
---
--- TOC entry 2860 (class 2606 OID 18942)
--- Name: users users_matricula_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_matricula_unique UNIQUE (matricula);
-
-
---
--- TOC entry 2862 (class 2606 OID 18938)
--- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_pkey PRIMARY KEY ("ID");
-
-
---
--- TOC entry 2867 (class 2606 OID 18984)
+-- TOC entry 2852 (class 2606 OID 27969)
 -- Name: modulos modulos_id_disciplina_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.modulos
-    ADD CONSTRAINT modulos_id_disciplina_foreign FOREIGN KEY ("id_disciplina") REFERENCES public.disciplinas("id_disciplina");
+    ADD CONSTRAINT modulos_id_disciplina_foreign FOREIGN KEY (id_disciplina) REFERENCES public.disciplinas(id_disciplina);
 
 
--- Completed on 2022-06-08 22:59:37 -03
+-- Completed on 2022-06-22 12:04:55 -03
 
 --
 -- PostgreSQL database dump complete
 --
-
