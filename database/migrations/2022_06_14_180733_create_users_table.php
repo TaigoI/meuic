@@ -14,13 +14,19 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->string('ID');
+            $table->string('google_id')->nullable();
+
             $table->string('email')->primary();
-            $table->string('matricula')->unique();
+            $table->string('matricula')->unique()->nullable();
             $table->string('name');
-            $table->string('picture');
-            $table->string('user_role');
-            
+
+            $table->string('picture')->nullable();
+
+			$table->string('teacher_status')->default('NO'); //NO, REQUESTED, DENIED, ACCEPTED
+            $table->string('user_role')->default('S');
+
+            $table->rememberToken();
+            $table->timestamps();
         });
     }
 

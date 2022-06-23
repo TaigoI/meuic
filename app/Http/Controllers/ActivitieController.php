@@ -3,44 +3,45 @@
 namespace App\Http\Controllers;
 
 use App\Models\Atividade;
+use Illuminate\Contracts\Queue\Monitor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
+use App\Models\Monitores;
 
 class ActivitieController extends Controller
 {
     //
 
     public function index(){
-        // Retornar a lista de monitores
-        $listaAtvs = Atividade::all();
-        return view('manage_activitie',compact('listaAtvs'));
+        // Retornar a lista de atividades do monitor logado
+        $listaAtvs = Atividade::where('id_monitor','=',Auth::user()->email)->orderBy('data_completa','asc')->get();
+        // $listaAtvs = $listaAtvs->sortByDesc('data_completa');
+        return view('class_dashboard',compact('listaAtvs'));
     }
 
     public function insert(Request $request){
-
-        $nova_atv = new Atividade();
-        //Botar o email do Auth aqui
-        $nova_atv->id_monitor = 'teste1@gmail.com';
-        $nova_atv->desc_atividade = $request->get('desc_atividade');
         
         $data = $request->get('data');
-        $array = list($year,$month,$day)=explode("-", $data);
-        $nova_atv->dia_atividade = $array[2];
-        $nova_atv->mes_atividade = $array[1];
-        $nova_atv->ano_atividade = $array[0];
+        $mes = Carbon::createFromFormat('Y-m-d', $data)->locale('pt_BR')->monthName;
+        list($year,$month,$day)=explode("-", $data);
         
-
         $tempo = $request->get('tempo_gasto');
-        $array = list($hour,$minute)=explode(":", $tempo);
-        $array[0] = $array[0] * 60;
-        $nova_atv->tempo_gasto = $array[0] + $array[1];
+        list($hour,$minute)=explode(":", $tempo);
 
-        //Aprender a tratar o save
-        $nova_atv->save();
+        Atividade::create([
+            "id_monitor" => Auth::user()->email,
+            "desc_atividade" => $request->get('desc_atividade'),
+            "dia_atividade" => $day,
+            "mes_atividade" => $mes,
+            "ano_atividade" => $year,
+            "hora_gasto" => $hour,
+            "min_gasto" =>$minute,
+            'data_completa' =>$data
+            
+        ]);
 
-        $result = (['retorno'=>'Atividade registrada']);
-       
-        return view('class_dashboard', $result);
+        return back();        // return view('class_dashboard');
     }
-
 
 }

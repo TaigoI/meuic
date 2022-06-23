@@ -18,10 +18,12 @@ return new class extends Migration
             $table->string('id_monitor');
             $table->foreign('id_monitor')->references('email')->on('users');
             $table->string('desc_atividade');
-            $table->integer('tempo_gasto');
+            $table->integer('hora_gasto');
+            $table->integer('min_gasto');
             $table->integer('dia_atividade');
             $table->string('mes_atividade');
             $table->integer('ano_atividade');
+            $table->date('data_completa');
             
         });
     }

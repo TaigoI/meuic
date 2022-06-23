@@ -21,11 +21,13 @@ class AtividadesSeeder extends Seeder
         DB::table('atividades')->insert([
             'id_monitor' => 'testes@ic.ufal.br',
             'desc_atividade' => "teste de atividade" ,
-            'tempo_gasto' => 4,
+            'hora_gasto' => 4,
+            'min_gasto' => 20,
             'id_atividade' => 1,
             'dia_atividade' => 30,
             'mes_atividade' => "MAIO",
             'ano_atividade' => 2022,
+            'data_completa' => '2022-05-30'
         ]);
     }
 }

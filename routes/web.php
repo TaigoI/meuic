@@ -19,7 +19,7 @@ use App\Http\Controllers\ManageMonitorController;
 */
 
 Route::get('/', [MainDashboardController::class, 'index']);
-Route::get('/home', [MainDashboardController::class, 'index']);
+Route::get('/home', [MainDashboardController::class, 'index'])->name("home");
 
 Route::get('/teste', [MainDashboardController::class, 'eloquentTest']);
 
@@ -48,8 +48,6 @@ Route::get('/disciplinas',[ManageMonitorController::class,'index']);
 
 Route::get('/disciplinas/{idDisc}',[ManageMonitorController::class, 'getMonitoresDisciplina']);
 
-Route::get('/classdashboard',function(){
-    return view('class_dashboard');
-});
+Route::get('/classdashboard',[ActivitieController::class, 'index']);
 
 Route::post('/classdashboard/createAtv', [ActivitieController::class, 'insert']);

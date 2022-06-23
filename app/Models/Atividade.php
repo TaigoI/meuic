@@ -28,10 +28,12 @@ class Atividade extends Model
         'id_atividade',
         'id_monitor',
         'desc_atividade',
-        'tempo_gasto',
         'dia_atividade',
         'mes_atividade',
         'ano_atividade',
+        'hora_gasto',
+        'min_gasto',
+        'data_completa'
     ];
 
 
