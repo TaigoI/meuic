@@ -65,18 +65,17 @@
 	</div>
 	<div class="col justify-content-start" >
 		<div class="d-flex flex-column">
-			
-				<div class="row">
-					<div class="col align-items-center profilepicture col-3">                                    
-						<img class="rounded-circle m-auto" src="{{Auth::user()->picture}}"  width="110px" height="110px"  referrerpolicy="no-referrer">    
-					</div>
-					<div class="col" style="margin-top: 20px;">
-						<h6>Nome</h6>
-						<p id="nomeUser" class="fonteCorDiferente robotoFlex">{{Auth::user()->name}}</p>
-						<h6>Email</h6>
-						<p id="emailUser" class="fonteCorDiferente robotoFlex">{{Auth::user()->email}}</p>                                    
-					</div>
-				</div>                
+			<div class="row">
+				<div class="col align-items-center profilepicture col-3">                                    
+					<img class="rounded-circle m-auto" src="{{Auth::user()->picture}}"  width="110px" height="110px"  referrerpolicy="no-referrer">    
+				</div>
+				<div class="col" style="margin-top: 20px;">
+					<h6>Nome</h6>
+					<p id="nomeUser" class="fonteCorDiferente robotoFlex">{{Auth::user()->name}}</p>
+					<h6>Email</h6>
+					<p id="emailUser" class="fonteCorDiferente robotoFlex">{{Auth::user()->email}}</p>                                    
+				</div>
+			</div>                
 		</div>
 	</div>
 </div>
