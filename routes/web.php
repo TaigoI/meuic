@@ -23,6 +23,7 @@ Route::get('/teste', [MainDashboardController::class, 'eloquentTest']);
 
 
 Route::get('/profile', [ProfileController::class, 'getView']);
+Route::post('/profile/update', [ProfileController::class, 'update']);
 
 Route::get('auth/google', [GoogleAuthController::class, 'redirect']);
 Route::get('callbacks/google', [GoogleAuthController::class, 'handleCallback']);

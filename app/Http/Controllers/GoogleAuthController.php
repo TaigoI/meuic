@@ -33,7 +33,12 @@ class GoogleAuthController extends Controller
         );
 
 		Auth::login($user, $remember = true);
-		return redirect('/home');
+		
+		if(!Auth::user()->matricula){
+			return redirect('/profile');
+		} else {
+			return redirect('/home');
+		}
 	}
 
 	public function logOut()
@@ -43,4 +48,6 @@ class GoogleAuthController extends Controller
         Auth::logout();
         return redirect('/home');
 	}
+
+
 }

@@ -12,28 +12,36 @@
                         Conclua seu cadastro
                     </p>
                 </div>
-                <div class="p-2">
-                    <div class="form-floating mb-4">
-                        <input type="email" class="form-control rounded-pill inputsTexto" style="border-radius: 20px !important;" id="userInput"
-                            placeholder="usuario" value="{{Auth::user()->siape}}">
-                        <label for="userInput" class="align-items-center" style="color: grey;">Matrícula/SIAPE</label>
-                    </div>
-                    <div class="form-floating professorCheckbox">
-                        <div class="form-check">
-                            <input class="form-check-input" style="border-color: #12E58D;" type="checkbox" value="" id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Sou professor
-                            </label>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="p-2">                    
-                    <button class="buttonEntrar btn btn-primary " type="button">
-                        Entrar
-                    </button>                 
-                </div>
+				<form method="POST" action="/profile/update">
+					@csrf
+					<div class="p-2">
+						<div class="form-floating mb-4">
+							<input name="matricula" class="form-control rounded-pill inputsTexto" style="border-radius: 20px !important;" id="userInput"
+								placeholder="usuario" value="{{Auth::user()->matricula}}">
+							<label for="userInput" class="align-items-center" style="color: grey;">Matrícula/SIAPE</label>
+						</div>
+						<div class="form-floating professorCheckbox">
+							<div class="form-check">
+								@if(Auth::user()->teacher_status == "NO")
+									<input name="checkbox" class="form-check-input" style="border-color: #12E58D;" type="checkbox" id="flexCheckDefault">
+								@endif
+								<label class="form-check-label" for="flexCheckDefault">
+									{{Auth::user()->teacher_status == "NO"         ? "Solicitar perfil de professor"   : ''}}
+									{{Auth::user()->teacher_status == "REQUESTED"  ? "Perfil de professor em análise"  : ''}}
+									{{Auth::user()->teacher_status == "ACCEPTED"   ? "Perfil de professor aprovado"    : ''}}
+									{{Auth::user()->teacher_status == "DENIED"     ? "Perfil de professor negado"      : ''}}
+								</label>
+							</div>
+						</div>
+	
+					</div>
+	               
+					<div style="display:flex;" class="p-2 justify-content-center">                    
+						<button class="buttonEntrar btn btn-primary " type="submit">
+							Atualizar
+						</button>                 
+					</div>               
+				</form>
             </div>
         </div>
         <div class="col coluna2 justify-content-start" >
