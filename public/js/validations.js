@@ -3,7 +3,6 @@
 function dynamicRenderAddButton(){
     var addButtonDiv = document.getElementById("ButtonDiv");
 
-    
     addButtonDiv.style.display = 'contents';    
 }
 

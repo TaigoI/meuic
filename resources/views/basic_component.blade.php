@@ -40,12 +40,12 @@
 				<div class="header-buttons d-grid gap-2 d-flex flex-row justify-content-end align-items-center">
 					<!--Botoes Header-->
 					@if(Auth::user()->user_role == 'T')
-						<button class="btn rounded-pill topbar_button darkblue" type="button">
+						<a class="btn rounded-pill topbar_button darkblue" type="button" href="/disciplinas">
 							<div class="material-icons">
 								school
 							</div>
 							&nbsp;Disciplinas
-						</button>
+						</a>
 					@endif	
 
 					@if(Auth::user()->user_role == 'T' or Auth::user()->user_role == 'M')

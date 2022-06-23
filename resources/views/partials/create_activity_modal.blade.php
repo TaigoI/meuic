@@ -1,9 +1,9 @@
 <!-- Modal -->
 <div class="modal fade" id="registraAtividadeModal" tabindex="-1" role="dialog" aria-labelledby="registraAtividadeModalTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header border-0">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="d-grid flex-column justify-content-around align-items-center">
                 <div class="modal-body">
@@ -41,6 +41,7 @@
                         </div>
                     </form>
                 
+                </div>
             </div>
         </div>
     </div>

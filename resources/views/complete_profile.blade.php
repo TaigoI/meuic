@@ -1,7 +1,5 @@
 @extends('basic_component')
-@if(!Auth::user())
-	redirect('/home');
-@endif
+
 @section('page content')
     
 @include('partials/feedback_basic_alert')
