@@ -40,10 +40,11 @@ foreach ($listaAtvs as $lista){
             <h4 class="m-0 mb-1 row discipline-name">
                 Atividades 
             </h4>
+        </div>
     </div>
             
     <!-- Dropdowns de professor -->
-    @if(Auth::user()->role == 'T')
+    @if(Auth::user()->user_role == 'T')
     <div class="row align-items-top">
         <div class="col-12 col-md-5">
             <div class="form-floating mb-4">
@@ -65,20 +66,30 @@ foreach ($listaAtvs as $lista){
                 <label for="inputGroupMonitor" class="align-items-center labelInput">Monitor(a)</label>
             </div>
         </div>
-        @endif
+    @endif
 
-        <div class="d-flex justify-content-end">
-                <div class="col-2" style="padding-bottom: 15px;">
-                    <button class="btn main-button blue " type="button" data-toggle="modal" data-target="#registraAtividadeModal">
-                        <div class="icon-sm">
-                            event
-                        </div>
-                        Registrar Atividades
-                    </button>
+        @if(Auth::user()->user_role == 'T')
+        <div class="col-12 col-md-2">
+            <button class="btn main-button blue" type="button" data-toggle="modal" data-target="#registraAtividadeModal">
+                <div class="icon-sm">
+                    event
                 </div>
-            </div>
-            
+                Registrar Atividades
+            </button>
         </div>
+        @elseif(Auth::user()->user_role == 'M')
+        <div class="row d-flex justify-content-end">
+            <div class="col-12 col-md-2">
+                <button class="btn main-button blue" type="button" data-toggle="modal" data-target="#registraAtividadeModal">
+                    <div class="icon-sm">
+                        event
+                    </div>
+                    Registrar Atividades
+                </button>
+            </div>
+        </div>
+        @endif
+    </div>
                    
         @foreach($listaMeses as $mesano=>$listaAtividades)
 

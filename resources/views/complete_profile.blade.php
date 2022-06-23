@@ -1,7 +1,5 @@
 @extends('basic_component')
-@if(!Auth::user())
-	redirect('/home');
-@endif
+
 @section('page content')
 <div class="container">
     

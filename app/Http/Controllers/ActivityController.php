@@ -14,6 +14,12 @@ class ActivityController extends Controller
     //
 
     public function index(){
+        if(!Auth::user()){
+			return redirect('/home');
+		}
+        if(Auth::user()->user_role == 'S'){
+			return redirect('/home');
+        }
         // Retornar a lista de atividades do monitor logado
         $listaAtvs = Atividade::where('id_monitor','=',Auth::user()->email)->orderBy('data_completa','asc')->get();
         // $listaAtvs = $listaAtvs->sortByDesc('data_completa');

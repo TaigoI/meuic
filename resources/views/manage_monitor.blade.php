@@ -1,20 +1,23 @@
 @extends('basic_component')
 
+
 @section('page content')
 <div class="row align-items-center py-4">
   <div class="col-2" style="width: min-content;">
-    <button type="button" class="btn btn-dark material-icons" disabled style="background: #212529 !important; opacity: 1 !important;">
+    <a type="button" class="btn btn-dark material-icons" disabled style="background: #212529 !important; opacity: 1 !important;" href='/'>
       <i class="material-icons">arrow_back</i>
-    </button>
+    </a>
   </div>
   <div class="col-10 col-md-11">
     <h4 class="m-0 mb-1 row discipline-name">
       Gerenciamento de monitores
     </h4>
+   
   </div>
 </div>
 
 <div class="discipline-monitor-page ">
+    @include('partials/feedback_basic_alert')
 
     <div class="py-4">
         <form role="form" method="POST" action="" name="selectDisciplinaForm" onchange="document.forms['selectDisciplinaForm'].submit();">
@@ -72,23 +75,23 @@
                                     </a>
                                     
                                     <div class="modal fade" id="{{ $format_email }}Modal" tabindex="-1" aria-labelledby="monitorExcludeConfirmModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered">
-                                        <div class="modal-content">
-                                        <div class="modal-header border-0">
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>Tem certeza que deseja remover o monitor <b id="monitorDisplayModal">{{ $monitor["name"] }}</b> da disciplina <b>{{session('idDisc')}}</b>?</p> 
-                                        </div>
-                                        
-                                            <div class="px-3 py-4 d-flex justify-content-center">                                  
-                                                <button class="btn btn-success btn-sm rounded-pill" type="submit">
-                                                    Confirmar
-                                                </button>
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                            <div class="modal-header border-0">
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                        
+                                            <div class="modal-body">
+                                                <p>Tem certeza que deseja remover o monitor <b id="monitorDisplayModal">{{ $monitor["name"] }}</b> da disciplina <b>{{session('idDisc')}}</b>?</p> 
+                                            </div>
+                                            
+                                                <div class="px-3 py-4 d-flex justify-content-center">                                  
+                                                    <button class="btn btn-success btn-sm rounded-pill" type="submit">
+                                                        Confirmar
+                                                    </button>
+                                                </div>
+                                            
+                                            </div>
                                         </div>
-                                    </div>
                                     </div>
 
                                 </form>
@@ -146,8 +149,13 @@
                                 </div>
                             </form>
 
-                            
                         </div>
+
+                        <!--Se o aluno não existir-->
+                        <div id="feedbackPartialDiv" style="display: none;"> 
+                            <!-- @include('partials/feedback_basic_alert')  -->                         
+                            <div class="alert alert-warning" role="alert" id="feedbackPartial"> </div>
+                        </div> 
 
                         <!--Se o aluno existir-->
                         <div class="px-1 py-2">
@@ -168,7 +176,9 @@
                             </div>
                         </div>
 
-                    </div>
+                    </div>                
+                    
+                                               
                 </div>
             </div>
         </div>
