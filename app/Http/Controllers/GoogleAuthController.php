@@ -18,6 +18,15 @@ class GoogleAuthController extends Controller
 			->redirect();
     }
 
+	private function isUserSignedIn($email){
+		if(User::find($email) == null){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+
 	public function handleCallback()
 	{
 		$googleUser = Socialite::driver('google')->user();
@@ -33,12 +42,13 @@ class GoogleAuthController extends Controller
         );
 
 		Auth::login($user, $remember = true);
-		
+
 		if(!Auth::user()->matricula){
 			return redirect('/profile');
 		} else {
 			return redirect('/home');
 		}
+
 	}
 
 	public function logOut()
@@ -48,6 +58,5 @@ class GoogleAuthController extends Controller
         Auth::logout();
         return redirect('/home');
 	}
-
 
 }

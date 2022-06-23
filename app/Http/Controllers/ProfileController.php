@@ -34,7 +34,9 @@ class ProfileController extends Controller
 				'teacher_status' => $status,
 			],
 		);
-
+    
+    
+        session()->flash('success', 'Informações atualizadas com sucesso!');
 		return redirect('/profile')->with('message', 'TESTE');
     }
 }

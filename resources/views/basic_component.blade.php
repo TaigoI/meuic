@@ -1,7 +1,4 @@
 <!DOCTYPE html>
-<?php 
-$role = "monitor" //papel do usuario no sistema
-?>
 <html lang="pt-BR">
     <head>
         <meta charset="UTF-8">
@@ -32,7 +29,9 @@ $role = "monitor" //papel do usuario no sistema
         <div class="header fixed-top d-flex p-4 px-md-5 mb-3 bg-light">
             <!--Meu@IC logo-->
             <div class="header-logo d-md-flex my-auto flex-grow-1">
-                <h2 class="mr-3 p-2">Meu@IC</h2>
+				<a style="text-decoration:none; color:black;" href="/">
+                	<h2 class="mr-3 p-2">Meu@IC</h2>
+				</a>
             </div>  
             <!--End of Meu@IC logo--> 
 
@@ -40,48 +39,33 @@ $role = "monitor" //papel do usuario no sistema
 			@if(Auth::check())
 				<div class="header-buttons d-grid gap-2 d-flex flex-row justify-content-end align-items-center">
 					<!--Botoes Header-->
-					<!--Se o usuario for monitor-->
-					@if(Auth::user()->role == 'M')
-						<div class="dropdown">
-						<button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Monitor
+					@if(Auth::user()->user_role == 'T')
+						<button class="btn rounded-pill topbar_button darkblue" type="button">
+							<div class="material-icons">
+								school
+							</div>
+							&nbsp;Disciplinas
 						</button>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="#">Historico</a>
-							<a class="dropdown-item" href="#">Administrar disciplina</a>
-						</div>
-						</div>
-					@endif
+					@endif	
 
-					<!--Se o usuario for professor-->
-					@if(Auth::user()->role == 'T')
-						<div class="dropdown">
-						<button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							Professor
-						</button>
-						<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-							<a class="dropdown-item" href="#">Gerenciar disciplinas</a>
-							<a class="dropdown-item" href="#">Gerenciar monitores</a>
-						</div>
-						</div>
-					@endif
-
-					@if(Auth::user()->role == 'T' or Auth::user()->role == 'M')
-						<button class="btn rounded-pill topbar_button blue" type="button">
+					@if(Auth::user()->user_role == 'T' or Auth::user()->user_role == 'M')
+						<a class="btn rounded-pill topbar_button blue" type="button" href="/activities">
 							<div class="material-icons">
 								add_task
 							</div>
 							&nbsp;Atividades
-						</button>
+						</a>
 					@endif
-
+					
+					@if(Auth::user()->user_role == 'S' or Auth::user()->user_role == 'M')
 					<button class="btn rounded-pill topbar_button dark" type="button">
 						<div class="material-icons">
 							event
 						</div>
 						&nbsp;Agendar
 					</button>
-
+					@endif
+					
 					@if(Request::is('profile'))
 						<form method="GET" action="/logout">
 							<button class="btn rounded-pill topbar_button dark" type="submit">
@@ -134,10 +118,15 @@ $role = "monitor" //papel do usuario no sistema
         </div>
         <!--End of Footer-->
 
+        <script src="{{ asset('js/searchAJAX.js') }}"></script>
+        <script src="{{ asset('js/validations.js') }}"></script>
         <!--Bootstrap dependencies-->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+        
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <!--End of Bootstrap dependencies-->
+       <!--End of Bootstrap dependencies-->
     </body>
 </html>
