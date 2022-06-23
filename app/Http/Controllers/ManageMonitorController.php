@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Disciplina;
 use App\Models\Monitores;
-use Illuminate\Support\Facades\DB;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ManageMonitorController extends Controller
 {
@@ -14,12 +14,32 @@ class ManageMonitorController extends Controller
     public function index(){
         // Retornar a lista de disciplinas
         $listadisciplinas = Disciplina::all();
-        return view('manage_disciplina',compact('listadisciplinas'));
-        
+
+        /* 
+        $query = Monitores::with('aluno')->get();
+        $disciplina_monitor_map = collect();
+
+        foreach ($query as $item) {            
+            $disciplina_monitor_map->put($item->id_disciplina, collect());           
+        }
+
+        foreach ($query as $item) {            
+            $disciplina_monitor_map[$item->id_disciplina]->push($item->aluno);           
+        } */
+
+        session()->put('idDisc', null);
+        return view('manage_monitor', compact('listadisciplinas'));
     }
 
-    public function getMonitoresDisciplina($idDisc){
+    private function getListaDisciplinas(){
+        $listadisciplinas = Disciplina::all();
 
+        return  $listadisciplinas;
+    }
+
+    public function getMonitoresDisciplina(Request $request){
+        $idDisc = $request->disciplinaSelect;
+        session()->put('idDisc', $idDisc);
         // Retorna um array de arrays com as informações dos monitores de uma dada disciplina
         // As informações serão: name, email, picture
         $listaMonitores = Disciplina::find(strtoupper($idDisc))->monitor;
@@ -29,7 +49,11 @@ class ManageMonitorController extends Controller
             $listaUserInfo = array("name"=>$usuario->name,"email"=>$usuario->email,"picture"=>$usuario->picture);
             array_push($listaInfos,$listaUserInfo);
         }
-        return $listaInfos;
+        //dd($listaInfos);
+        
+        $listadisciplinas = $this->getListaDisciplinas();
+        
+        return view('manage_monitor', compact('listaInfos', 'listadisciplinas'));
     }
 
     public function getUserByEmail($email){
@@ -40,23 +64,30 @@ class ManageMonitorController extends Controller
         
         $usuario = User::find($email);
         $usuarioInfo = array("name"=>$usuario->name,"email"=>$usuario->email,"picture"=>$usuario->picture);
+        
         return $usuarioInfo;
     }
 
     // Excluir monitor
     public function destroy($email){
+   
         Monitores::where('id_aluno',$email)->delete();
+
+        //$listadisciplinas = $this->getListaDisciplinas();
+        
+        return redirect('/disciplinas');
     }
 
     // Add monitor
-    public function insert($email,$id_disciplina){
+    public function insert($email, $id_disciplina){
+        
+        $user = User::find(Auth::user()->email);
+        $user->update();
+        
         Monitores::create([
             "id_aluno" => $email,
             "id_disciplina" => $id_disciplina
         ]);
     }
-
-
-
     
 }

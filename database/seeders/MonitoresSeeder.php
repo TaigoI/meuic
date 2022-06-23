@@ -19,8 +19,32 @@ class MonitoresSeeder extends Seeder
     {
         
         DB::table('monitores')->insert([
-            'id_aluno' => 'testes@ic.ufal.br',
-            'id_disciplina' => 'COMP361'
+            'id_aluno' => 'mjgs@ic.ufal.br',
+            'id_disciplina' => 'COMP363'
         ]);
+
+         DB::table('monitores')->insert([
+            'id_aluno' => 'felipe@ic.ufal.br',
+            'id_disciplina' => 'COMP363'
+        ]); 
+        DB::table('monitores')->insert([
+            'id_aluno' => 'ebo@ic.ufal.br',
+            'id_disciplina' => 'COMP360'
+        ]); 
+        DB::table('monitores')->insert([
+            'id_aluno' => 'jals@ic.ufal.br',
+            'id_disciplina' => 'COMP362'
+        ]);
+   
+        DB::table('monitores')->insert([
+            'id_aluno' => 'timp@ic.ufal.br',
+            'id_disciplina' => 'COMP364'
+        ]);
+   
+        DB::table('monitores')->insert([
+            'id_aluno' => 'dbrs@ic.ufal.br',
+            'id_disciplina' => 'COMP364'
+        ]);
+   
     }
 }

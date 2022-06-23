@@ -22,8 +22,6 @@ use App\Http\Controllers\ActivityController;
 Route::get('/', [MainDashboardController::class, 'index']);
 Route::get('/home', [MainDashboardController::class, 'index'])->name("home");
 
-Route::get('/teste', [MainDashboardController::class, 'eloquentTest']);
-
 
 Route::get('/profile', [ProfileController::class, 'getView']);
 Route::post('/profile', [ProfileController::class, 'updateProfile']);
@@ -32,22 +30,14 @@ Route::get('auth/google', [GoogleAuthController::class, 'redirect']);
 Route::get('callbacks/google', [GoogleAuthController::class, 'handleCallback']);
 Route::get('logout', [GoogleAuthController::class, 'logOut']);
 
-Route::get('/monitors',function(){
-    return view('manage_monitors');
-});
-
-
-// Route::get('/disciplinas',function(){
-//     return view('manage_disciplina');
-// });
-
 Route::get('/disciplinas',[ManageMonitorController::class,'index']);
-
-// testes
-
+Route::post('/disciplinas',[ManageMonitorController::class, 'getMonitoresDisciplina']);
+Route::post('/disciplinas/delete/{email}',[ManageMonitorController::class, 'destroy'])->name('monitor_delete');
+Route::get('/disciplinas/find/{email}',[ManageMonitorController::class, 'getUserByEmail'])->name('monitor_find');
+Route::get('/disciplinas/insert/{email}/{id_disciplina}',[ManageMonitorController::class, 'insert'])->name('monitor_insert');
 Route::get('/disciplinas/{idDisc}',[ManageMonitorController::class, 'getMonitoresDisciplina']);
 
-Route::get('/activities',[ActivityController::class, 'index']);
 
+Route::get('/activities',[ActivityController::class, 'index']);
 Route::post('/activities/create', [ActivityController::class, 'insert']);
 
