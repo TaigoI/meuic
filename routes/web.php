@@ -25,7 +25,7 @@ Route::get('/home', [MainDashboardController::class, 'index'])->name("home");
 
 
 Route::get('/profile', [ProfileController::class, 'getView']);
-Route::post('/profile', [ProfileController::class, 'updateProfile']);
+Route::post('/profile/update', [ProfileController::class, 'update']);
 
 
 Route::get('auth/google', [GoogleAuthController::class, 'redirect']);

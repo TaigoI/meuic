@@ -42,12 +42,13 @@ class GoogleAuthController extends Controller
         );
 
 		Auth::login($user, $remember = true);
-		if (!$this->isUserSignedIn( $googleUser->getEmail())){
-			$page_title = ["page_title" => "Complete seu cadastro"];
-		return view('complete_profile', compact('page_title'));
-		} else{
-			return redirect('/');
-		}		
+
+		if(!Auth::user()->matricula){
+			return redirect('/profile');
+		} else {
+			return redirect('/home');
+		}
+
 	}
 
 	public function logOut()
@@ -57,4 +58,5 @@ class GoogleAuthController extends Controller
         Auth::logout();
         return redirect('/home');
 	}
+
 }
