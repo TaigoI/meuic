@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
         ]);
         DB::table('users')->insert([
             'google_id' => 2,
-            'email' => 'felipe@ic.ufal.br',
+            'email' => 'ffv@ic.ufal.br',
             'matricula'=> 4321,
             'name' => "felipe",
             'picture' => "https://conteudo.imguol.com.br/c/noticias/92/2022/05/04/elon-musk-no-baile-met-gala-em-nova-york-em-2-de-maio-de-2022-1651683047262_v2_4x3.jpg",
