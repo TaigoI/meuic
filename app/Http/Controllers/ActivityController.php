@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Disciplina;
 use App\Models\Atividade;
 use Illuminate\Contracts\Queue\Monitor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Carbon;
 use App\Models\Monitores;
+use App\Models\User;
 
 class ActivityController extends Controller
 {
@@ -23,7 +25,42 @@ class ActivityController extends Controller
         // Retornar a lista de atividades do monitor logado
         $listaAtvs = Atividade::where('id_monitor','=',Auth::user()->email)->orderBy('data_completa','asc')->get();
         // $listaAtvs = $listaAtvs->sortByDesc('data_completa');
-        return view('class_dashboard',compact('listaAtvs'));
+        
+        session()->put('idDisc', null);
+        $listadisciplinas =  $this->getListaDisciplinas();
+
+        return view('class_dashboard',compact('listadisciplinas','listaAtvs'));
+    }
+
+    private function getListaDisciplinas(){
+        $listadisciplinas = Disciplina::all();
+
+        return $listadisciplinas;
+    }
+
+    public function getMonitoresDisciplina(Request $request){
+        $idDisc = $request->id_disciplin;
+        session()->put('idDisc', $idDisc);
+        try{
+            $listaMonitores = Disciplina::find(strtoupper($idDisc))->monitor;
+        }
+        catch(\Exception $e){
+            return response()->json([]);
+        }
+
+            
+        
+        $listaInfos = array();
+        foreach ($listaMonitores as $userMonitor){
+            $usuario = User::find($userMonitor->id_aluno);
+            $listaUserInfo = array("name"=>$usuario->name,"email"=>$usuario->email);
+            array_push($listaInfos,$listaUserInfo);
+        }
+        //dd($listaInfos);
+        
+        $listadisciplinas = $this->getListaDisciplinas();
+
+        return response()->json($listaInfos);
     }
 
     public function insert(Request $request){

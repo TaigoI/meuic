@@ -49,9 +49,16 @@ foreach ($listaAtvs as $lista){
         <div class="col-12 col-md-5">
             <div class="form-floating mb-4">
                 <select class="form-select slot-1 dropdown" id="inputGroupDisciplina">
-                    <option value="1" selected>Programação 1</option>
-                    <option value="2">Estrutura de Dados</option>
-                    <option value="3">Projeto e Análise de Algoritmos</option>
+                    <option value="" data-default disabled selected>Selecione</option>
+                    
+                    @foreach ($listadisciplinas as $disciplina)
+                        @if (session('idDisc') != null and $disciplina->id_disciplina == session('idDisc'))
+                            <option type="submit" value={{$disciplina->id_disciplina}} id=disciplina_selecionada selected> {{ $disciplina->name_disciplina }}</option>
+                        @else
+                            <option type="submit" value={{$disciplina->id_disciplina}}> {{ $disciplina->name_disciplina }}</option>
+                        @endif
+                    @endforeach     
+                    
                 </select>
                 <label for="inputGroupDisciplina" class="align-items-center labelInput">Disciplina</label>
             </div>
@@ -59,9 +66,7 @@ foreach ($listaAtvs as $lista){
         <div class="col-12 col-md-5">
             <div class="form-floating mb-4">
                 <select class="form-select slot-1 dropdown" id="inputGroupMonitor">
-                    <option value="1" selected> Sônia </option>
-                    <option value="2"> Letícia </option>
-                    <option value="3"> Amélia </option>
+                    <option value="" selected> Selecione </option>
                 </select>    
                 <label for="inputGroupMonitor" class="align-items-center labelInput">Monitor(a)</label>
             </div>
@@ -74,7 +79,7 @@ foreach ($listaAtvs as $lista){
                 <div class="icon-sm">
                     event
                 </div>
-                Registrar Atividades
+                Buscar Atividades
             </button>
         </div>
         @elseif(Auth::user()->user_role == 'M')
@@ -134,7 +139,32 @@ foreach ($listaAtvs as $lista){
         
     </div>
 </div>
+<script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
 
+<script>
+    $('#inputGroupDisciplina').on('change',e => {
+        $("#inputGroupMonitor").find('option').not(':first').remove();
+        var url = "{{ url('activities/monitors?id_disciplin=')}}";
+        //console.log($('#inputGroupDisciplina').val());
+        var id_disc = $('#inputGroupDisciplina').val();
+        $.ajax({
+            url: url +id_disc,
+            type: 'get',
+            dataType:'json',
+            success: function(response){
+                len = response.length;
+                for(var i=0;i<len;i++){
+                    var name = response[i].name
+                    var email = response[i].email
+                    var option = "<option value='"+email+"'>"+name+"</option>";
+
+                    $("#inputGroupMonitor").append(option);
+
+                }
+            }
+        })
+    })
+</script>
 @include('partials/create_activity_modal')
     
 @stop

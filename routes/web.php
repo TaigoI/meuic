@@ -41,6 +41,8 @@ Route::get('/disciplinas/{idDisc}',[ManageMonitorController::class, 'getMonitore
 
 
 Route::get('/activities',[ActivityController::class, 'index']);
+Route::get('/activities/monitors',[ActivityController::class, 'getMonitoresDisciplina']);
+
 Route::post('/activities/create', [ActivityController::class, 'insert']);
 
 
