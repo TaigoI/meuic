@@ -24,7 +24,7 @@ class MonitoresSeeder extends Seeder
         ]);
 
          DB::table('monitores')->insert([
-            'id_aluno' => 'felipe@ic.ufal.br',
+            'id_aluno' => 'ffv@ic.ufal.br',
             'id_disciplina' => 'COMP363'
         ]); 
         DB::table('monitores')->insert([
