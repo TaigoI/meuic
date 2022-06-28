@@ -11,15 +11,6 @@ class Horario extends Model
     // Definindo a PK
     protected $primaryKey = 'id_horario';
 
-    /*
-    As proximas duas linhas sao para evitar que ele tente incrementar
-    a PK automaticamente, além de definir que o tipo é uma string.
-    
-    Necessário porque se não o Laravel vai tentar tratar como um int
-
-    Timestamps desligados
-    */
-       
     public $timestamps = false;
     
 

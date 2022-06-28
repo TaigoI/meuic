@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('horarios', function (Blueprint $table) {
-            $table->string('id_horario');
+            $table->id('id_horario');
             $table->string('id_monitor');
             $table->foreign('id_monitor')->references('email')->on('users');
             $table->integer('dia');

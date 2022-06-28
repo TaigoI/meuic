@@ -54,7 +54,7 @@ class Monitores extends Model
     }
 
     public function horarios(){
-        return $this->hasMany(Horario::class,'id_aluno','id_monitor');
+        return $this->hasMany(Horario::class,'id_monitor','id_aluno');
     }
     
 }
