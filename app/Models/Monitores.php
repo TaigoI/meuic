@@ -57,4 +57,8 @@ class Monitores extends Model
         return $this->hasMany(Horario::class,'id_monitor','id_aluno');
     }
     
+    public function agendamentos(){
+        // agendamentos de cada monitor
+        return $this->hasMany(Agendamento::class,'id_monitor','id_aluno');
+    }
 }

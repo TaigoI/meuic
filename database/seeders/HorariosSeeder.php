@@ -20,8 +20,15 @@ class HorariosSeeder extends Seeder
             'id_horario' => 1,
             'id_monitor' => 'ffv@ic.ufal.br',
             'dia' => 2,
-            'slot_inicial' => 0,
-            'slot_final' => 1
+            'slot' => 1,
+            
+        ]);
+        DB::table('horarios')->insert([
+            'id_horario' => 2,
+            'id_monitor' => 'ffv@ic.ufal.br',
+            'dia' => 3,
+            'slot' => 2,
+            
         ]);
     }
 }
