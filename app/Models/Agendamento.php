@@ -35,7 +35,7 @@ class Agendamento extends Model
     }
 
     public function slot(){
-        return $this->hasMany(Slot::class,'id_slot','slot_agendamento');
+        return $this->hasMany(Slot::class,'id_slots','slot_agendamento');
         // testar a inversao disso aqui
     }
 }
