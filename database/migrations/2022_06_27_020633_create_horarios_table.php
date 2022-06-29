@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('dia');
             $table->integer('slot');
             $table->foreign('slot')->references('id_slots')->on('slots');
+			$table->boolean('online')->default(false);
             
         });
     }

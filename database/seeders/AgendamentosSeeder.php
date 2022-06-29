@@ -17,6 +17,12 @@ class AgendamentosSeeder extends Seeder
     public function run()
     {
         // Seeder de agendamento
+		Agendamento::updateOrCreate(['id_disciplina' => 'COMP361','id_monitor' => 'ffv@ic.ufal.br'],[
+			'data_agendamento' => '28/06/2022',
+			'slot_agendamento' => 1,
+            'anotacao_agendamento' => 'duvidas da lista',
+            'topico_agendamento' => 'big o',
+        ]);		
 		Agendamento::updateOrCreate(['id_disciplina' => 'COMP360','id_monitor' => 'ffv@ic.ufal.br'],[
 			'data_agendamento' => '28/06/2022',
 			'slot_agendamento' => 1,

@@ -18,6 +18,6 @@ class ClassTimetableController extends Controller
     }
 
 	public function notFound(){      
-			return redirect('/');
+		return redirect('/');
     }
 }

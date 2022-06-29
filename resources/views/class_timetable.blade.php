@@ -7,30 +7,80 @@
 @php
 $timetable = [
 	'Segunda' => array(
-		['size' => 3, 'content' => ['aqua']],
-		['size' => 1, 'content' => 'NULL'],
-		['size' => 2, 'content' => ['aqua']]
+		['size' => 3, 'data' => [
+			['color' => 'aqua', 'subslots' => [
+				['booked' => true],['online' => true],[],
+			]]
+		]],
+		['size' => 1],
+		['size' => 2, 'data' => [
+			['color' => 'aqua', 'subslots' => [
+				[],[],
+			]]
+		]]
 	),
 	'Terça' => array(
-		['size' => 2, 'content' => 'NULL'],
-		['size' => 2, 'content' => ['aqua','blue']],
-		['size' => 1, 'content' => ['blue']],
-		['size' => 1, 'content' => 'NULL']
+		['size' => 2],
+		['size' => 2, 'data' => [
+			['color' => 'aqua', 'subslots' => [
+				[],[],
+			]],
+			['color' => 'blue', 'subslots' => [
+				[],[],
+			]],
+		]],
+		['size' => 1, 'data' => [
+			['color' => 'blue', 'subslots' => [
+				[],
+			]],
+		]],
+		['size' => 1]
 	),
 	'Quarta' => array(
-		['size' => 2, 'content' => ['aqua']],
-		['size' => 2, 'content' => 'NULL'],
-		['size' => 2, 'content' => ['blue']]
+		['size' => 2, 'data' => [
+			['color' => 'aqua', 'subslots' => [
+				[],[],
+			]]
+		]],
+		['size' => 2],
+		['size' => 2, 'data' => [
+			['color' => 'blue', 'subslots' => [
+				[],[],
+			]],
+		]]
 	),
 	'Quinta' => array(
-		['size' => 1, 'content' => 'NULL'],
-		['size' => 2, 'content' => ['aqua']],
-		['size' => 3, 'content' => ['blue']]
+		['size' => 1],
+		['size' => 2, 'data' => [
+			['color' => 'aqua', 'subslots' => [
+				[],[],
+			]],
+		]],
+		['size' => 3, 'data' => [
+			['color' => 'blue', 'subslots' => [
+				[],[],[],
+			]],
+		]]
 	),
 	'Sexta' => array(
-		['size' => 2, 'content' => ['aqua', 'blue']],
-		['size' => 1, 'content' => ['blue']],
-		['size' => 3, 'content' => ['aqua']]
+		['size' => 2, 'data' => [
+			['color' => 'aqua', 'subslots' => [
+				[],[],
+			]],
+			['color' => 'blue', 'subslots' => [
+				[],[],
+			]],
+		]],
+		['size' => 1, 'data' => [
+			['color' => 'blue', 'subslots' => [
+				[]
+			]],
+		]],
+		['size' => 3, 'data' => [
+			['color' => 'aqua', 'subslots' => [
+				[],[],[],
+			]]
+		]]
 	)
 ];
 @endphp
@@ -92,10 +142,24 @@ $timetable = [
 
 						@foreach($timetable[$day] as $slot)
 							<div class="row timeslot slot-{{$slot['size']}}">
-								@if($slot['content'] != 'NULL')
-									@foreach($slot['content'] as $type)
-										<div class="slot-card slot-card-{{count($slot['content'])}} {{$type}} 
-										{{ ($loop->index + 1 != count($slot['content'])) ? 'card-rightspace' : '' }}">
+								@if(array_key_exists('data',$slot))
+									@foreach($slot['data'] as $data)
+										<div class="slot-card slot-card-{{count($slot['data'])}} {{$data['color']}} {{ ($loop->index + 1 != count($slot['data'])) ? 'card-rightspace' : '' }}">
+											@foreach($data['subslots'] as $subslot)
+												<div class="slot-card tip slot-sub {{ (array_key_exists('booked',$subslot) and $subslot['booked']) ? 'slot-sub-booked' : '' }} {{ (array_key_exists('online',$subslot) and $subslot['online']) ? 'slot-sub-online' : '' }}">
+													@if(array_key_exists('booked',$subslot) and $subslot['booked'])
+														<span class="anti-tiptext icon-sm">
+															lock_clock
+														</span>
+														<span class="tiptext"> Tópico aqui </span>
+													@elseif(array_key_exists('online',$subslot) and $subslot['online'])
+														<span class="anti-tiptext icon-sm">
+															cloud	
+														</span>
+														<span class="tiptext"> Somente Online </span>
+													@endif
+												</div>
+											@endforeach
 										</div>
 									@endforeach
 								@endif
