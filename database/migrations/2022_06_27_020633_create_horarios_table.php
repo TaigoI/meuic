@@ -18,8 +18,9 @@ return new class extends Migration
             $table->string('id_monitor');
             $table->foreign('id_monitor')->references('email')->on('users');
             $table->integer('dia');
-            $table->integer('slot_inicial');
-            $table->integer('slot_final');
+            $table->integer('slot');
+            $table->foreign('slot')->references('id_slots')->on('slots');
+            
         });
     }
 

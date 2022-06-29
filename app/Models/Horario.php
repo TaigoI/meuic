@@ -19,8 +19,8 @@ class Horario extends Model
         'id_horario',
         'id_monitor',
         'dia',
-        'slot_inicial',
-        'slot_final',
+        'slot',
+        
     ];
 
     public function monitores(){
