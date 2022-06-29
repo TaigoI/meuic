@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\Horario;
 
 class HorariosSeeder extends Seeder
 {
@@ -16,19 +17,30 @@ class HorariosSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('horarios')->insert([
-            'id_horario' => 1,
+        Horario::updateOrCreate([
             'id_monitor' => 'ffv@ic.ufal.br',
             'dia' => 2,
-            'slot' => 1,
-            
+            'slot' => 1
         ]);
-        DB::table('horarios')->insert([
-            'id_horario' => 2,
+        Horario::updateOrCreate([
             'id_monitor' => 'ffv@ic.ufal.br',
             'dia' => 3,
-            'slot' => 2,
-            
+            'slot' => 2
+        ]);
+		Horario::updateOrCreate([
+            'id_monitor' => 'timp@ic.ufal.br',
+            'dia' => 4,
+            'slot' => 1
+        ]);
+		Horario::updateOrCreate([
+            'id_monitor' => 'timp@ic.ufal.br',
+            'dia' => 4,
+            'slot' => 2
+        ]);
+		Horario::updateOrCreate([
+            'id_monitor' => 'timp@ic.ufal.br',
+            'dia' => 4,
+            'slot' => 3
         ]);
     }
 }
