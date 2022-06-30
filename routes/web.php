@@ -8,6 +8,7 @@ use App\Http\Controllers\MainDashboardController;
 use App\Http\Controllers\ManageMonitorController;
 use App\Http\Controllers\ClassTimetableController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\BookTimeslotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,3 +47,7 @@ Route::post('/activities/create', [ActivityController::class, 'insert']);
 
 Route::get('/timetable', [ClassTimetableController::class, 'notFound']);
 Route::get('/timetable/{idDisciplina}', [ClassTimetableController::class, 'index']);
+
+Route::get('/book', [BookTimeslotController::class, 'index']);
+Route::post('/book', [BookTimeslotController::class, 'getMonitoresSlots']);
+
