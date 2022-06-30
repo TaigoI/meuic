@@ -71,7 +71,7 @@ class BookTimeslotController extends Controller
         //dump($request);
         $horarios = null;
         if($request->topicoInput != null){ //significa que todos os inputs foram preenchidos e pode ser feito o agendamento
-            dd($request);
+            //dd($request);
             $created = Agendamento::create([
                 "id_disciplina" => $request->disciplinaSelect,
                 "id_monitor" =>  $request->monitorSelect,
