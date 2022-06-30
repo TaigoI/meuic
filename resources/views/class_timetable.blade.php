@@ -277,8 +277,8 @@
     </div>
     
     <div class="editarHorarioButtonDiv justify-content-end" style="margin-bottom: 100px ;">
-        <button class="editarHorarioButton btn rounded-pill white" type="button" data-toggle="modal"
-            data-target="#exampleModalScrollable">
+        <button class="editarHorarioButton btn rounded-pill white" type="button" data-bs-toggle="modal"
+            data-bs-target="#exampleModalScrollable">
             <div class="px-1">
                 <div class="material-icons">
                     edit

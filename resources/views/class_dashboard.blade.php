@@ -87,7 +87,7 @@ foreach ($listaAtvs as $lista){
         @elseif(Auth::user()->user_role == 'M')
         <div class="row d-flex justify-content-end">
             <div class="col-12 col-md-2">
-                <button class="btn main-button blue" type="button" data-toggle="modal" data-target="#registraAtividadeModal">
+                <button class="btn main-button blue" type="button" data-bs-toggle="modal" data-bs-target="#registraAtividadeModal">
                     <div class="icon-sm">
                         event
                     </div>
@@ -107,10 +107,10 @@ foreach ($listaAtvs as $lista){
             @endphp
         
             <div class="d-flex justify-content-center">
-                <div class="col-8">
+                <div class="col-12">
                     <div class="group">
-                        <div class="groupslot-header slot-1" data-toggle="collapse" data-target="#{{$mesano}}, #{{$mesano}}1, #{{$mesano}}2">
-                            <div class="groupslot-header-card slot-card slot-card-1 dark">
+                        <div class="groupslot-header slot-1" data-bs-toggle="collapse" data-bs-target="#{{$mesano}}, #{{$mesano}}1, #{{$mesano}}2">
+                            <div class="groupslot-header-card header-card slot-card-1 dark">
                                 <h4 class="header-title" id="mes_atividade">{{$nomecampo}}</h4>
                                 <h4 id="{{$mesano}}1" class="icon-sm collapse">expand_more</h4>
                                 <h4 id="{{$mesano}}2" class="icon-sm collapse show">expand_less</h4>
@@ -120,9 +120,9 @@ foreach ($listaAtvs as $lista){
                         <div id="{{$mesano}}" class="collapse" aria-labelledby="{{$mesano}}">
                             <div class="groupslot">
                                 
-                                <div class="col-8 col-md-12 slot-card light-gray" style="justify-content: left !important;">
+                                <div class="col-12 header-card light-gray" style="justify-content: left !important;">
                                     
-                                    <ul>
+                                    <ul style="margin: 0px !important">
                                         @foreach($listaAtividades as $atividades)
                                         <li style="text-align: left;">{{$atividades->dia_atividade}}/{{$atividades->mes_atividade}} - {{$atividades->desc_atividade}} ({{$atividades->hora_gasto}}h{{$atividades->min_gasto}}min)
                                         </li>
@@ -133,7 +133,6 @@ foreach ($listaAtvs as $lista){
                             </div>
                         </div>
                     </div>
- 
                 </div>  
             </div>               
         

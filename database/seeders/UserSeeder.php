@@ -44,14 +44,14 @@ class UserSeeder extends Seeder
             'matricula'=> 7891,
             'name' => "José Arthur Lopes Sabino",
             'picture' => "https://t.ctcdn.com.br/IFvswOVy57rDAEBc5_ox062Me0c=/400x400/smart/filters:format(webp)/i490763.jpeg",
-            'user_role' => 'S'
+            'user_role' => 'M'
         ]);
         User::updateOrCreate(['email' => 'timp@ic.ufal.br'],[
             'google_id' => 2,
             'matricula'=> 1567,
             'name' => "Taigo Italo de Moraes Pedrosa",
             'picture' => "https://upload.wikimedia.org/wikipedia/commons/a/a1/Alan_Turing_Aged_16.jpg",
-            'user_role' => 'S'            
+            'user_role' => 'T'            
     	]);
         User::updateOrCreate(['email' => 'dbrs@ic.ufal.br'],[
             'google_id' => 2,

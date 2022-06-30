@@ -159,7 +159,7 @@ footer{
     width: 100%;
 }
 
-.timeslot, .slot-card, .dashboard-card, .dashboard-unlogged-card{
+.timeslot, .slot-card, .header-card, .dashboard-card, .dashboard-unlogged-card{
     justify-content: center !important;
     align-items: center !important;
 	text-align: center;
@@ -181,10 +181,18 @@ footer{
 
 .slot-card{
     display: flex;
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     height: 100%;
 	flex-direction: column;
 	padding: calc(var(--slot-space) / var(--subspace-divider)) !important;
+}
+
+.header-card{
+    display: flex;
+    border-radius: 1rem;
+    height: 100%;
+	flex-direction: row;
+	padding: 1rem;
 }
 
 .slot-sub{
@@ -334,13 +342,6 @@ footer{
     font-weight: 400;
     color:inherit;
     font-size: 1.5rem;
-}
-
-.slot-card{
-    display: flex;
-    border-radius: 1rem;
-    height: 100%;
-    padding: 1rem;
 }
 
 .unround-top{

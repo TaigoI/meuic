@@ -2,17 +2,19 @@
 
 @section('page content')
     <div class="row align-items-center py-4">
-        <div class="col-2" style="width: min-content;">
-            <button type="button" class="btn btn-dark material-icons" disabled style="background: #212529 !important; opacity: 1 !important;">
-                arrow_back
-            </button>
-        </div>
-        <div class="col-10 col-md-11">
-            <h4 class="m-0 mb-1 row discipline-name">
-                Agendamento de Horário
-            </h4>
-        </div>
-    </div>
+		<div class="col-2" style="width: min-content;">
+			<a href="/">
+				<button type="button" class="btn btn-dark material-icons">
+					arrow_back
+				</button>
+			</a>
+		</div>
+		<div class="col-10 col-md-11">
+			<h4 class="m-0 mb-1 row discipline-name">
+				Agendamento de Horário
+			</h4>
+		</div>
+	</div>
 
         <!--Form-->
         <div style="justify-content: center !important; margin-left: 25%;">
