@@ -59,26 +59,42 @@ class ActivityController extends Controller
 
         return response()->json($listaInfos);
     }
-    public function getActivites(Request $request){ 
-        $idMonitor = $request->id_monitor;
-        try{
-            $listaAtividades = Atividade::select("*")->where("id_monitor",'=',$idMonitor)->get();
-        }
-        catch(\Exception $e){
-            return response()->json([$idMonitor]);
-        }
+    // public function getActivites(Request $request){ 
+    //     $idMonitor = $request->id_monitor;
+    //     try{
+    //         $listaAtividades = Atividade::select("*")->where("id_monitor",'=',$idMonitor)->get();
+    //     }
+    //     catch(\Exception $e){
+    //         return response()->json([$idMonitor]);
+    //     }
 
-        $atividades = array();
-        foreach ($listaAtividades as $atividadeMonitor){
-            $atividade = Atividade::find($atividadeMonitor->id_atividade);
-            $atividadeInfos = array("descricao"=>$atividade->desc_atividade,"data"=>$atividade->data_completa,
-            "hora"=>$atividade->hora_gasto,"minutos"=>$atividade->min_gasto);
-            array_push($atividades,$atividadeInfos);
-        }
+    //     $atividades = array();
+        
+    //     foreach ($listaAtividades as $atividadeMonitor){
+    //         $atividade = Atividade::find($atividadeMonitor->id_atividade);
+            
+    //         $atividadeInfos = array("descricao"=>$atividade->desc_atividade,"data"=>$atividade->data_completa,
+    //         "hora"=>$atividade->hora_gasto,"minutos"=>$atividade->min_gasto);
+    //         array_push($atividades,$atividadeInfos);
+    //     }
 
-        return response()->json($atividades);
+    //     return response()->json($atividades);
+    // }
+
+
+    public function getActivites(Request $request){
+        // $id_monitor = 0; // de onde pegar esse id_monitor? o value do button é o id
+        $id_monitor = $request->id_monitor;
+        $listaAtvs = Atividade::where('id_monitor','=',$id_monitor)->orderBy('data_completa','asc')->get();
+        $listadisciplinas =  $this->getListaDisciplinas();
+
+       
+        return view('class_dashboard',compact('listadisciplinas','listaAtvs'));
+            
+       
+       
+
     }
-
     public function insert(Request $request){
         
         $data = $request->get('data');

@@ -75,11 +75,13 @@ foreach ($listaAtvs as $lista){
 
         @if(Auth::user()->user_role == 'T')
         <div class="col-12 col-md-2">
-            <button class="btn main-button blue" type="submit" id="searchbutton">
+            <button class="btn main-button blue" type="submit" id="searchbutton", >
                 <div class="icon-sm">
                     event
                 </div>
+                <!-- <a href="{{route('find_activity', 'ebo@ic.ufal.br')}} "> Buscar Atividades </a> -->
                 Buscar Atividades
+                
             </button>
         </div>
         @elseif(Auth::user()->user_role == 'M')
@@ -95,7 +97,7 @@ foreach ($listaAtvs as $lista){
         </div>
         @endif
     </div>
-                   
+        <!-- Isso aqui so pode aparecer quando ele clicar no botao  -->
         @foreach($listaMeses as $mesano=>$listaAtividades)
 
             @php
@@ -171,35 +173,23 @@ foreach ($listaAtvs as $lista){
 </script>
 <script>
     $("#searchbutton").on('click',e => {
-        var url = "{{ url('activities/find_activity?id_monitor=') }} ";
-        var monitor = document.getElementById("inputGroupMonitor").value;
-        $.ajax({
-            url: url+monitor,
-            type: 'get',
-            dataType: 'json',
-            success: function(response){
-                $('#activitiesDiv').empty();
-                len = response.length
-                if(len==0){
-                    var text = "<div class='alert alert-primary d-flex align-items-center' role='alert'><div>O Monitor não possui atividades registradas</div></div>"
-                    $('#activitiesDiv').append(text)
-                }else{
-                    var table = "<table class='table' id='tableActivities'><thead><tr><th scope='col'>Data</th><th scope='col'>Descrição</th><th scope='col'>Tempo da atividade</th></table>";
-                    $('#activitiesDiv').append(table);
-                    for(var i=0;i<len;i++){
-                        var descricao = response[i].descricao;
-                        var data = response[i].data
-                        var hora = response[i].hora 
-                        var minutos = response[i].minutos
-
-                         
-                        rows ="<tr><td>"+data+"</td><td>"+descricao+"</td><td>"+hora+":"+minutos+"</td></tr>"
-                        $('#tableActivities').append(rows);
-                    }
-                }
-            }
-        })
-    });
+        // var url = "{{ url('activities/find_activity?id_monitor=') }} ";
+        // $.ajax({
+        //     url: url+monitor,
+        //     type: 'get',
+        //     dataType: 'json'
+            
+        // });
+        
+    var monitor = document.getElementById("inputGroupMonitor").value;
+    var req = new XMLHttpRequest();
+    req.responseType = "json";
+    req.open("GET", 'activities/find_activity/' + monitor, true);
+    req.onload = function () {
+        window.location.href = "/activities/find_activity/"+monitor;
+    };
+    req.send(null);
+});
     
 </script>
 @include('partials/create_activity_modal')
