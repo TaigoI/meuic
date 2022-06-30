@@ -49,9 +49,16 @@ foreach ($listaAtvs as $lista){
         <div class="col-12 col-md-5">
             <div class="form-floating mb-4">
                 <select class="form-select slot-1 dropdown" id="inputGroupDisciplina">
-                    <option value="1" selected>Programação 1</option>
-                    <option value="2">Estrutura de Dados</option>
-                    <option value="3">Projeto e Análise de Algoritmos</option>
+                    <option value="" data-default disabled selected>Selecione</option>
+                    
+                    @foreach ($listadisciplinas as $disciplina)
+                        @if (session('idDisc') != null and $disciplina->id_disciplina == session('idDisc'))
+                            <option type="submit" value={{$disciplina->id_disciplina}} id=disciplina_selecionada selected> {{ $disciplina->name_disciplina }}</option>
+                        @else
+                            <option type="submit" value={{$disciplina->id_disciplina}}> {{ $disciplina->name_disciplina }}</option>
+                        @endif
+                    @endforeach     
+                    
                 </select>
                 <label for="inputGroupDisciplina" class="align-items-center labelInput">Disciplina</label>
             </div>
@@ -59,9 +66,7 @@ foreach ($listaAtvs as $lista){
         <div class="col-12 col-md-5">
             <div class="form-floating mb-4">
                 <select class="form-select slot-1 dropdown" id="inputGroupMonitor">
-                    <option value="1" selected> Sônia </option>
-                    <option value="2"> Letícia </option>
-                    <option value="3"> Amélia </option>
+                    <option value="" selected> Selecione </option>
                 </select>    
                 <label for="inputGroupMonitor" class="align-items-center labelInput">Monitor(a)</label>
             </div>
@@ -70,11 +75,13 @@ foreach ($listaAtvs as $lista){
 
         @if(Auth::user()->user_role == 'T')
         <div class="col-12 col-md-2">
-            <button class="btn main-button blue" type="button" data-toggle="modal" data-target="#registraAtividadeModal">
+            <button class="btn main-button blue" type="submit" id="searchbutton", >
                 <div class="icon-sm">
                     event
                 </div>
-                Registrar Atividades
+                <!-- <a href="{{route('find_activity', 'ebo@ic.ufal.br')}} "> Buscar Atividades </a> -->
+                Buscar Atividades
+                
             </button>
         </div>
         @elseif(Auth::user()->user_role == 'M')
@@ -90,7 +97,7 @@ foreach ($listaAtvs as $lista){
         </div>
         @endif
     </div>
-                   
+        <!-- Isso aqui so pode aparecer quando ele clicar no botao  -->
         @foreach($listaMeses as $mesano=>$listaAtividades)
 
             @php
@@ -126,15 +133,65 @@ foreach ($listaAtvs as $lista){
                             </div>
                         </div>
                     </div>
-
+ 
                 </div>  
             </div>               
         
         @endforeach
         
     </div>
-</div>
+    <div id="activitiesDiv">
 
+    </div>
+</div>
+<script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+
+
+<script>
+    $('#inputGroupDisciplina').on('change',e => {
+        $("#inputGroupMonitor").find('option').not(':first').remove();
+        var url = "{{ url('activities/monitors?id_disciplin=')}}";
+        //console.log($('#inputGroupDisciplina').val());
+        var id_disc = $('#inputGroupDisciplina').val();
+        $.ajax({
+            url: url +id_disc,
+            type: 'get',
+            dataType:'json',
+            success: function(response){
+                len = response.length;
+                for(var i=0;i<len;i++){
+                    var name = response[i].name
+                    var email = response[i].email
+                    var option = "<option value='"+email+"'>"+name+"</option>";
+
+                    $("#inputGroupMonitor").append(option);
+
+                }
+            } 
+        })
+    })
+</script>
+<script>
+    $("#searchbutton").on('click',e => {
+        // var url = "{{ url('activities/find_activity?id_monitor=') }} ";
+        // $.ajax({
+        //     url: url+monitor,
+        //     type: 'get',
+        //     dataType: 'json'
+            
+        // });
+        
+    var monitor = document.getElementById("inputGroupMonitor").value;
+    var req = new XMLHttpRequest();
+    req.responseType = "json";
+    req.open("GET", 'activities/find_activity/' + monitor, true);
+    req.onload = function () {
+        window.location.href = "/activities/find_activity/"+monitor;
+    };
+    req.send(null);
+});
+    
+</script>
 @include('partials/create_activity_modal')
     
 @stop
