@@ -56,11 +56,27 @@ class ActivityController extends Controller
             $listaUserInfo = array("name"=>$usuario->name,"email"=>$usuario->email);
             array_push($listaInfos,$listaUserInfo);
         }
-        //dd($listaInfos);
-        
-        $listadisciplinas = $this->getListaDisciplinas();
 
         return response()->json($listaInfos);
+    }
+    public function getActivites(Request $request){ 
+        $idMonitor = $request->id_monitor;
+        try{
+            $listaAtividades = Atividade::select("*")->where("id_monitor",'=',$idMonitor)->get();
+        }
+        catch(\Exception $e){
+            return response()->json([$idMonitor]);
+        }
+
+        $atividades = array();
+        foreach ($listaAtividades as $atividadeMonitor){
+            $atividade = Atividade::find($atividadeMonitor->id_atividade);
+            $atividadeInfos = array("descricao"=>$atividade->desc_atividade,"data"=>$atividade->data_completa,
+            "hora"=>$atividade->hora_gasto,"minutos"=>$atividade->min_gasto);
+            array_push($atividades,$atividadeInfos);
+        }
+
+        return response()->json($atividades);
     }
 
     public function insert(Request $request){

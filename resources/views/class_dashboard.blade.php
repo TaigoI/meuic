@@ -75,7 +75,7 @@ foreach ($listaAtvs as $lista){
 
         @if(Auth::user()->user_role == 'T')
         <div class="col-12 col-md-2">
-            <button class="btn main-button blue" type="button" data-toggle="modal" data-target="#registraAtividadeModal">
+            <button class="btn main-button blue" type="submit" id="searchbutton">
                 <div class="icon-sm">
                     event
                 </div>
@@ -131,15 +131,19 @@ foreach ($listaAtvs as $lista){
                             </div>
                         </div>
                     </div>
-
+ 
                 </div>  
             </div>               
         
         @endforeach
         
     </div>
+    <div id="activitiesDiv">
+
+    </div>
 </div>
 <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+
 
 <script>
     $('#inputGroupDisciplina').on('change',e => {
@@ -161,9 +165,42 @@ foreach ($listaAtvs as $lista){
                     $("#inputGroupMonitor").append(option);
 
                 }
-            }
+            } 
         })
     })
+</script>
+<script>
+    $("#searchbutton").on('click',e => {
+        var url = "{{ url('activities/find_activity?id_monitor=') }} ";
+        var monitor = document.getElementById("inputGroupMonitor").value;
+        $.ajax({
+            url: url+monitor,
+            type: 'get',
+            dataType: 'json',
+            success: function(response){
+                $('#activitiesDiv').empty();
+                len = response.length
+                if(len==0){
+                    var text = "<div class='alert alert-primary d-flex align-items-center' role='alert'><div>O Monitor não possui atividades registradas</div></div>"
+                    $('#activitiesDiv').append(text)
+                }else{
+                    var table = "<table class='table' id='tableActivities'><thead><tr><th scope='col'>Data</th><th scope='col'>Descrição</th><th scope='col'>Tempo da atividade</th></table>";
+                    $('#activitiesDiv').append(table);
+                    for(var i=0;i<len;i++){
+                        var descricao = response[i].descricao;
+                        var data = response[i].data
+                        var hora = response[i].hora 
+                        var minutos = response[i].minutos
+
+                         
+                        rows ="<tr><td>"+data+"</td><td>"+descricao+"</td><td>"+hora+":"+minutos+"</td></tr>"
+                        $('#tableActivities').append(rows);
+                    }
+                }
+            }
+        })
+    });
+    
 </script>
 @include('partials/create_activity_modal')
     
