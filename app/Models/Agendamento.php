@@ -15,16 +15,14 @@ class Agendamento extends Model
     public $timestamps = false;
     
 
-    // Evitar que o usuario acesse diretamente o userRole
     protected $fillable = [
-    'id_agentamento',
-    'id_disciplina',
-    'id_monitor',
-    'data_agendamento',
-    'slot_agendamento',
-    'anotacao_agendamento',
-    'topico_agendamento',
-
+        'id_agendamento',
+        'id_disciplina',
+        'id_monitor',
+        'data_agendamento',
+        'slot_agendamento',
+        'anotacao_agendamento',
+        'topico_agendamento',
     ];
 
     // Adicionar o de slot aqui

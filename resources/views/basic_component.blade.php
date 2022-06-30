@@ -58,12 +58,12 @@
 					@endif
 					
 					@if(Auth::user()->user_role == 'S' or Auth::user()->user_role == 'M')
-					<button class="btn rounded-pill topbar_button dark" type="button">
+					<a class="btn rounded-pill topbar_button dark" type="button" href="/book">
 						<div class="material-icons">
 							event
 						</div>
 						&nbsp;Agendar
-					</button>
+					</a>
 					@endif
 					
 					@if(Request::is('profile'))

@@ -32,7 +32,8 @@
                         @else
                             <option type="submit" value={{$disciplina->id_disciplina}}> {{ $disciplina->name_disciplina }}</option>
                         @endif
-                    @endforeach                
+                    @endforeach   
+                                 
                 </select>
                 <!--<button type="submit"> Enviar form </button>-->
                 <label for="disciplinaSelect">Disciplina</label>

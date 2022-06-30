@@ -36,6 +36,8 @@ $timetable = [
 @endphp
 
 @section('page content')
+    @include('partials/feedback_basic_alert')
+
     <!--Body-->
 	<div class="row align-items-center py-4">
 		<div class="col-2" style="width: min-content;">
