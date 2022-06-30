@@ -19,12 +19,12 @@ class MonitoresSeeder extends Seeder
     public function run()
     {
         
-        Monitores::updateOrCreate(['id_aluno' => 'mjgs@ic.ufal.br','id_disciplina' => 'COMP363', 'cor' => 'acqua']);
+        Monitores::updateOrCreate(['id_aluno' => 'mjgs@ic.ufal.br','id_disciplina' => 'COMP363', 'cor' => 'aqua']);
         Monitores::updateOrCreate(['id_aluno' =>  'ffv@ic.ufal.br','id_disciplina' => 'COMP361', 'cor' => 'blue']);
         Monitores::updateOrCreate(['id_aluno' =>  'ebo@ic.ufal.br','id_disciplina' => 'COMP360', 'cor' => 'green']);
         Monitores::updateOrCreate(['id_aluno' => 'jals@ic.ufal.br','id_disciplina' => 'COMP362', 'cor' => 'darkblue']);
-        Monitores::updateOrCreate(['id_aluno' => 'timp@ic.ufal.br','id_disciplina' => 'COMP361', 'cor' => 'acqua']);
-        Monitores::updateOrCreate(['id_aluno' => 'dbrs@ic.ufal.br','id_disciplina' => 'COMP364', 'cor' => 'acqua']);
+        Monitores::updateOrCreate(['id_aluno' => 'timp@ic.ufal.br','id_disciplina' => 'COMP361', 'cor' => 'aqua']);
+        Monitores::updateOrCreate(['id_aluno' => 'dbrs@ic.ufal.br','id_disciplina' => 'COMP364', 'cor' => 'aqua']);
    
     }
 }

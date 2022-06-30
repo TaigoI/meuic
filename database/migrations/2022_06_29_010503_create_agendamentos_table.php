@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreign('id_disciplina')->references('id_disciplina')->on('disciplinas');
             $table->string('id_monitor');
             $table->foreign('id_monitor')->references('email')->on('users');
-            $table->string('data_agendamento');
+            $table->timestamp('data_agendamento');
             $table->integer('slot_agendamento');
             $table->foreign('slot_agendamento')->references('id_slots')->on('slots');
             $table->string('anotacao_agendamento');

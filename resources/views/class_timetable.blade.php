@@ -1,90 +1,5 @@
 @extends('basic_component')
 
-@if(!Auth::user())
-	redirect('/home');
-@endif
-
-@php
-$timetable = [
-	'Segunda' => array(
-		['size' => 3, 'data' => [
-			['color' => 'aqua', 'subslots' => [
-				['booked' => true],['online' => true],[],
-			]]
-		]],
-		['size' => 1],
-		['size' => 2, 'data' => [
-			['color' => 'aqua', 'subslots' => [
-				[],[],
-			]]
-		]]
-	),
-	'Terça' => array(
-		['size' => 2],
-		['size' => 2, 'data' => [
-			['color' => 'aqua', 'subslots' => [
-				[],[],
-			]],
-			['color' => 'blue', 'subslots' => [
-				[],[],
-			]],
-		]],
-		['size' => 1, 'data' => [
-			['color' => 'blue', 'subslots' => [
-				[],
-			]],
-		]],
-		['size' => 1]
-	),
-	'Quarta' => array(
-		['size' => 2, 'data' => [
-			['color' => 'aqua', 'subslots' => [
-				[],[],
-			]]
-		]],
-		['size' => 2],
-		['size' => 2, 'data' => [
-			['color' => 'blue', 'subslots' => [
-				[],[],
-			]],
-		]]
-	),
-	'Quinta' => array(
-		['size' => 1],
-		['size' => 2, 'data' => [
-			['color' => 'aqua', 'subslots' => [
-				[],[],
-			]],
-		]],
-		['size' => 3, 'data' => [
-			['color' => 'blue', 'subslots' => [
-				[],[],[],
-			]],
-		]]
-	),
-	'Sexta' => array(
-		['size' => 2, 'data' => [
-			['color' => 'aqua', 'subslots' => [
-				[],[],
-			]],
-			['color' => 'blue', 'subslots' => [
-				[],[],
-			]],
-		]],
-		['size' => 1, 'data' => [
-			['color' => 'blue', 'subslots' => [
-				[]
-			]],
-		]],
-		['size' => 3, 'data' => [
-			['color' => 'aqua', 'subslots' => [
-				[],[],[],
-			]]
-		]]
-	)
-];
-@endphp
-
 @section('page content')
     <!--Body-->
 	<div class="row align-items-center py-4">
@@ -110,24 +25,11 @@ $timetable = [
 				</div>
 			</div>
 
-			<h5 class="row timeslot slot-1 timeslot-horary">
-				07:30 - 09:10
-			</h5>
-			<h5 class="row timeslot slot-1 timeslot-horary">
-				09:20 - 11:00
-			</h5>
-			<h5 class="row timeslot slot-1 timeslot-horary">
-				11:10 - 12:50
-			</h5>
-			<h5 class="row timeslot slot-1 timeslot-horary">
-				13:30 - 15:10
-			</h5>
-			<h5 class="row timeslot slot-1 timeslot-horary">
-				15:20 - 17:00
-			</h5>
-			<h5 class="row timeslot slot-1 timeslot-horary">
-				17:10 - 18:50
-			</h5>
+			@foreach($slots as $slot)
+				<h5 class="row timeslot slot-1 timeslot-horary">
+					{{$slot->display_name}}
+				</h5>
+			@endforeach
 		</div>
 
 		<div class="col-12 col-sm-10">
@@ -136,7 +38,7 @@ $timetable = [
 					<div class="col-12 col-sm">
 						<div class="row timeslot slot-1">
 							<div class="slot-card slot-card-1 dark">
-								<h4 class="timeslot-title">{{$day}}</h4>
+								<h4 class="timeslot-title">{{App\Models\Dia::where('id_dia',$day)->first()->display_name}}</h4>
 							</div>
 						</div>
 
@@ -151,7 +53,7 @@ $timetable = [
 														<span class="anti-tiptext icon-sm">
 															lock_clock
 														</span>
-														<span class="tiptext"> Tópico aqui </span>
+														<span class="tiptext"> {{$subslot['booked']['topico_agendamento']}} </span>
 													@elseif(array_key_exists('online',$subslot) and $subslot['online'])
 														<span class="anti-tiptext icon-sm">
 															cloud	

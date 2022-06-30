@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('id_monitor');
             $table->foreign('id_monitor')->references('email')->on('users');
             $table->integer('dia');
+			$table->foreign('dia')->references('id_dia')->on('dias');
             $table->integer('slot');
             $table->foreign('slot')->references('id_slots')->on('slots');
 			$table->boolean('online')->default(false);

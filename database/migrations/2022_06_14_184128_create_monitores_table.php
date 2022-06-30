@@ -20,7 +20,7 @@ class CreateMonitoresTable extends Migration
             $table->foreign('id_aluno')->references('email')->on('users');
             $table->string('id_disciplina');
             $table->foreign('id_disciplina')->references('id_disciplina')->on('disciplinas');
-			$table->string('cor')->default('acqua');
+			$table->string('cor')->default('aqua');
         });
     }
 

@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
 		$this->call(DisciplinasSeeder::class);
 		$this->call(ModulosSeeder::class);
 		$this->call(SlotsSeeder::class);
+		$this->call(DiasSeeder::class);
 
 		//exemplos
 		$this->call(UserSeeder::class);

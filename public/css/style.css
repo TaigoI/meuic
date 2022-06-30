@@ -261,6 +261,14 @@ footer{
     height: calc(calc(6 * var(--slot-base)) + calc(5 * var(--slot-space))) !important;
 }
 
+.slot-7{
+    height: calc(calc(7 * var(--slot-base)) + calc(6 * var(--slot-space))) !important;
+}
+
+.slot-8{
+    height: calc(calc(8 * var(--slot-base)) + calc(7 * var(--slot-space))) !important;
+}
+
 .timeslot-horary{
     font-weight: 400;
     color:hsl(0, 0%, 62%);
