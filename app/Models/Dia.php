@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Slot extends Model
+class Dia extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'id_slots';
+    protected $primaryKey = 'id_dia';
 
     
     public $timestamps = false;
@@ -16,9 +16,7 @@ class Slot extends Model
 
     // Evitar que o usuario acesse diretamente o userRole
     protected $fillable = [
-    'id_slots',
-    'display_name',
-    'start_slot',
-    'end_slot',
+    'id_dia',
+    'display_name'
     ];
 }

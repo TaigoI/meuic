@@ -20,7 +20,7 @@ class Horario extends Model
         'id_monitor',
         'dia',
         'slot',
-        
+        'online'
     ];
 
     public function monitores(){

@@ -14,6 +14,7 @@ body{
     font-weight: 400;
     --slot-base: 4rem;
     --slot-space: 0.5rem;
+	--subspace-divider: 4;
     --timeslot-base: 4rem;
     --timeslot-space: 0.5rem;
     overflow-y: scroll;
@@ -182,6 +183,58 @@ footer{
     display: flex;
     border-radius: 0.5rem;
     height: 100%;
+	flex-direction: column;
+	padding: calc(var(--slot-space) / var(--subspace-divider)) !important;
+}
+
+.slot-sub{
+    height: 100% !important;
+	width: calc(100% - calc(calc(var(--slot-space) / var(--subspace-divider)) * 2)) !important;
+	margin: calc(var(--slot-space) / var(--subspace-divider)) !important;
+
+	color: hsl(0, 0%, 0%);
+	background-color: hsla(0, 0%, 100%, 0);
+	transition: background-color 0.25s ease-in-out;
+	z-index: 10;
+	position: relative;
+}
+
+.slot-sub:hover{
+	background-color: hsla(0, 0%, 100%, .4);
+}
+
+.slot-sub-booked{
+	background-color: hsla(0, 0%, 100%, .2);
+}
+
+.slot-sub-online{
+	border: hsla(0, 0%, 100%, .2) solid 0.25rem;
+}
+
+.tiptext{
+	opacity: 0%;
+
+	max-width: 95%;
+	max-height: 95%;
+	width: max-content;
+
+	text-align: center;
+	font-size: 0.75rem !important;
+
+	border-radius: 0.5rem;
+	padding: 2px 4px;
+	
+	position: absolute;
+
+	transition: opacity 0.25s ease-in-out;
+}
+
+.slot-sub:hover .tiptext{
+	opacity: 100%;
+}
+
+.slot-sub:hover .anti-tiptext{
+	opacity: 0%;
 }
 
 .slot-1{
@@ -206,6 +259,14 @@ footer{
 
 .slot-6{
     height: calc(calc(6 * var(--slot-base)) + calc(5 * var(--slot-space))) !important;
+}
+
+.slot-7{
+    height: calc(calc(7 * var(--slot-base)) + calc(6 * var(--slot-space))) !important;
+}
+
+.slot-8{
+    height: calc(calc(8 * var(--slot-base)) + calc(7 * var(--slot-space))) !important;
 }
 
 .timeslot-horary{

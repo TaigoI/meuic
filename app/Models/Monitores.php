@@ -27,7 +27,8 @@ class Monitores extends Model
     // Evitar que o usuario acesse diretamente o userRole
     protected $fillable = [
         'id_aluno',
-        'id_disciplina'
+        'id_disciplina',
+		'cor'
     ];
 
     /*

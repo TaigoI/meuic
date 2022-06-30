@@ -1,40 +1,5 @@
 @extends('basic_component')
 
-@if(!Auth::user())
-	redirect('/home');
-@endif
-
-@php
-$timetable = [
-	'Segunda' => array(
-		['size' => 3, 'content' => ['aqua']],
-		['size' => 1, 'content' => 'NULL'],
-		['size' => 2, 'content' => ['aqua']]
-	),
-	'Terça' => array(
-		['size' => 2, 'content' => 'NULL'],
-		['size' => 2, 'content' => ['aqua','blue']],
-		['size' => 1, 'content' => ['blue']],
-		['size' => 1, 'content' => 'NULL']
-	),
-	'Quarta' => array(
-		['size' => 2, 'content' => ['aqua']],
-		['size' => 2, 'content' => 'NULL'],
-		['size' => 2, 'content' => ['blue']]
-	),
-	'Quinta' => array(
-		['size' => 1, 'content' => 'NULL'],
-		['size' => 2, 'content' => ['aqua']],
-		['size' => 3, 'content' => ['blue']]
-	),
-	'Sexta' => array(
-		['size' => 2, 'content' => ['aqua', 'blue']],
-		['size' => 1, 'content' => ['blue']],
-		['size' => 3, 'content' => ['aqua']]
-	)
-];
-@endphp
-
 @section('page content')
     <!--Body-->
 	<div class="row align-items-center py-4">
@@ -60,24 +25,11 @@ $timetable = [
 				</div>
 			</div>
 
-			<h5 class="row timeslot slot-1 timeslot-horary">
-				07:30 - 09:10
-			</h5>
-			<h5 class="row timeslot slot-1 timeslot-horary">
-				09:20 - 11:00
-			</h5>
-			<h5 class="row timeslot slot-1 timeslot-horary">
-				11:10 - 12:50
-			</h5>
-			<h5 class="row timeslot slot-1 timeslot-horary">
-				13:30 - 15:10
-			</h5>
-			<h5 class="row timeslot slot-1 timeslot-horary">
-				15:20 - 17:00
-			</h5>
-			<h5 class="row timeslot slot-1 timeslot-horary">
-				17:10 - 18:50
-			</h5>
+			@foreach($slots as $slot)
+				<h5 class="row timeslot slot-1 timeslot-horary">
+					{{$slot->display_name}}
+				</h5>
+			@endforeach
 		</div>
 
 		<div class="col-12 col-sm-10">
@@ -86,16 +38,30 @@ $timetable = [
 					<div class="col-12 col-sm">
 						<div class="row timeslot slot-1">
 							<div class="slot-card slot-card-1 dark">
-								<h4 class="timeslot-title">{{$day}}</h4>
+								<h4 class="timeslot-title">{{App\Models\Dia::where('id_dia',$day)->first()->display_name}}</h4>
 							</div>
 						</div>
 
 						@foreach($timetable[$day] as $slot)
 							<div class="row timeslot slot-{{$slot['size']}}">
-								@if($slot['content'] != 'NULL')
-									@foreach($slot['content'] as $type)
-										<div class="slot-card slot-card-{{count($slot['content'])}} {{$type}} 
-										{{ ($loop->index + 1 != count($slot['content'])) ? 'card-rightspace' : '' }}">
+								@if(array_key_exists('data',$slot))
+									@foreach($slot['data'] as $data)
+										<div class="slot-card slot-card-{{count($slot['data'])}} {{$data['color']}} {{ ($loop->index + 1 != count($slot['data'])) ? 'card-rightspace' : '' }}">
+											@foreach($data['subslots'] as $subslot)
+												<div class="slot-card tip slot-sub {{ (array_key_exists('booked',$subslot) and $subslot['booked']) ? 'slot-sub-booked' : '' }} {{ (array_key_exists('online',$subslot) and $subslot['online']) ? 'slot-sub-online' : '' }}">
+													@if(array_key_exists('booked',$subslot) and $subslot['booked'])
+														<span class="anti-tiptext icon-sm">
+															lock_clock
+														</span>
+														<span class="tiptext"> {{$subslot['booked']['topico_agendamento']}} </span>
+													@elseif(array_key_exists('online',$subslot) and $subslot['online'])
+														<span class="anti-tiptext icon-sm">
+															cloud	
+														</span>
+														<span class="tiptext"> Somente Online </span>
+													@endif
+												</div>
+											@endforeach
 										</div>
 									@endforeach
 								@endif
