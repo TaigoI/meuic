@@ -16,7 +16,73 @@
 
     @php
         $colors = ["green", "aqua", "blue", "darkblue"];
+		$n_agendamentos = count($agendamentos->keys());
+
     @endphp
+
+	@if($n_agendamentos)
+	<div class="periodos-containers container">
+		<h4 class="periodos_title">Agendamentos</h4>
+			<!-- Possui carrossel -->
+			@if ($n_agendamentos > 4)
+				@php 
+					$i = 0;
+					$flag = true;
+				@endphp
+				<div id="agendamentos" class="carousel slide" data-ride="carousel" data-interval="false">
+					<div class="carousel-inner">
+						@foreach($agendamentos->keys() as $id)
+							@if ($i == 0 and $flag)
+								<div class="carousel-item active">
+									<div class="row" style="margin-left: 40px; margin-right:40px;">
+								@php $flag = false; @endphp
+							@elseif ($i == 0 and !$flag)
+								<div class="carousel-item">
+									<div class="row" style="margin-left: 40px; margin-right:40px;">
+							@endif			
+							<div class="col-md-4 col-lg-3 pt-2 pb-3" id={{$id}}>
+								<div class="card dashboard-card slot-1 dark">
+									<h5 class="card-title">{{ $agendamentos[$id]->topico_agendamento }}</h5>                    
+								</div>
+							</div>
+							
+							@if (($i + 1) == 4)  
+								@php $i = 0 @endphp
+							@else
+								@php $i += 1 @endphp
+							@endif
+						@endforeach
+					
+					</div>
+					</div>
+					
+
+					<a style="width: max-content;" class="carousel-control-next pt-2 pb-3" href=#{{$carrossel_id}} role="button" data-slide="next" id={{$carrossel_id}}>
+						<span class="icon-md text-dark">navigate_next</span>                    
+					</a>
+
+					<a style="width: max-content;" class="carousel-control-prev pt-2 pb-3" href=#{{$carrossel_id}} role="button" data-slide="next" id={{$carrossel_id}}>
+						<span class="icon-md text-dark">navigate_before</span>                    
+					</a>
+					
+				</div>
+				</div>
+
+			@else
+				<!-- Não possui carrossel -->
+				<div class="row" style="margin-left: 40px; margin-right:40px;">
+				@foreach($agendamentos->keys() as $id)
+					<div class="col-md-4 col-lg-3 pt-2 pb-3" id={{$id}}>
+						<div class="card dashboard-card slot-1 dark">
+							<h5 class="card-title">{{ $agendamentos[$id]->topico_agendamento }}</h5>                    
+						</div>
+					</div>
+				@endforeach
+				</div>
+
+			@endif                 
+	</div> 
+	@endif
 
     @foreach($disciplinas->keys() as $modulo)
         <div class="periodos-containers container">

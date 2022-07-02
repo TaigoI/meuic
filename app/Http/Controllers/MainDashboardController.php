@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Disciplina;
 use App\Models\Modulo;
+use App\Models\Agendamento;
 
 class MainDashboardController extends Controller
 {
@@ -18,6 +20,7 @@ class MainDashboardController extends Controller
         ])->orderBy('modulo', 'ASC')->get();
         
         $disciplinas = collect();
+		$agendamentos = collect();
 
         foreach ($query as $item) {            
             $disciplinas->put($item->modulo, collect());           
@@ -26,8 +29,19 @@ class MainDashboardController extends Controller
         foreach ($query as $item) {            
             $disciplinas[$item->modulo]->put($item->id_disciplina, $item->name_disciplina);           
         } 
+
+		$semana_atual = date('w');
+		$inicio_semana = date('d-m-Y', strtotime('-'.$semana_atual.' days'));
+		$fim_semana = date('d-m-Y', strtotime('+'.(6-$semana_atual).' days'));
+		if(Auth::user()){
+			$aux = []; //TODO
+			
+			foreach ($aux as $item) {            
+				$agendamentos->put($item->id_agendamento, $item);           
+			}
+		}
         
-        return view('main_dashboard', compact('disciplinas'));
+        return view('main_dashboard', compact('disciplinas', 'agendamentos'));
     }
 
 }

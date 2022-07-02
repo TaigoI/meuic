@@ -197,14 +197,27 @@ footer{
 
 .slot-sub{
     height: 100% !important;
-	width: calc(100% - calc(calc(var(--slot-space) / var(--subspace-divider)) * 2)) !important;
-	margin: calc(var(--slot-space) / var(--subspace-divider)) !important;
+	width: 100% !important;
 
 	color: hsl(0, 0%, 0%);
 	background-color: hsla(0, 0%, 100%, 0);
 	transition: background-color 0.25s ease-in-out;
 	z-index: 10;
 	position: relative;
+	border: none;
+
+	overflow: hidden;
+}
+
+.slot-sub-form{
+    height: 100% !important;
+	width: calc(100% - calc(calc(var(--slot-space) / var(--subspace-divider)) * 2)) !important;
+	margin: calc(var(--slot-space) / var(--subspace-divider)) !important;
+
+	justify-content: center !important;
+    align-items: center !important;
+    text-align: center;
+	display: flex;
 }
 
 .slot-sub:hover{
@@ -222,19 +235,23 @@ footer{
 .tiptext{
 	opacity: 0%;
 
-	max-width: 95%;
-	max-height: 95%;
+	max-width: 85%;
 	width: max-content;
 
 	text-align: center;
 	font-size: 0.75rem !important;
 
 	border-radius: 0.5rem;
-	padding: 2px 4px;
 	
 	position: absolute;
 
 	transition: opacity 0.25s ease-in-out;
+}
+
+.line-clamp-3 {
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;  
 }
 
 .slot-sub:hover .tiptext{

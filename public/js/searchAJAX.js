@@ -12,7 +12,8 @@ function search() {
     req.open("GET", '/disciplinas/find/' + input, true);
     
     req.onload = function () {
-        var monitores = req.response;
+		var monitores = req.response;
+		console.log(monitores);
         
         if(monitores[0] == 'ME' ||  monitores[0] == 'NE'){
             window.parent.dynamicRenderRemoveButton();
@@ -20,8 +21,8 @@ function search() {
             emailID.innerHTML = "";
             feedbackDiv.style.display = 'contents'; 
 
-            if(monitores[0] == 'ME'){
-                feedback.innerHTML = "Esse aluno já é monitor de outra disciplina. Remova-o desta primeiro.";        
+			if (monitores[0] == 'ME') {
+				feedback.innerHTML = "Esse aluno já é monitor de outra disciplina (" + monitores[1].id_disciplina +"). Remova-o desta primeiro.";        
             } else {
                 feedback.innerHTML = "Não existe um aluno com este email.";       
             } 

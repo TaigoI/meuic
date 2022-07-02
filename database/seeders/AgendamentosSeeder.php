@@ -18,31 +18,22 @@ class AgendamentosSeeder extends Seeder
     {
         // Seeder de agendamento
 		Agendamento::updateOrCreate([
-			'id_disciplina' => 'COMP361',
-			'id_monitor' => 'ffv@ic.ufal.br',
-			'data_agendamento' => "28-06-2022",
-			'slot_agendamento' => 2
-			],[
-            'anotacao_agendamento' => 'Questões 1 a 7 (Computador vs. Ética)',
-            'topico_agendamento' => 'Lista',
+			'id_horario' => 10,
+			'data' => '2022-06-28',
+			'anotacao' => 'Questões 1 a 7 (Computador vs. Ética)',
+            'topico' => 'Lista (Parte 1)',
         ]);
 		Agendamento::updateOrCreate([
-			'id_disciplina' => 'COMP361',
-			'id_monitor' => 'ffv@ic.ufal.br',
-			'data_agendamento' => "28-06-2022",
-			'slot_agendamento' => 3
-			],[
-            'anotacao_agendamento' => 'Questões 1 a 7 (Computador vs. Ética)',
-            'topico_agendamento' => 'Lista',
+			'id_horario' => 11,
+			'data' => '2022-06-28',
+            'anotacao' => 'Questões 8 a 14 (Computador vs. Ética)',
+            'topico' => 'Lista (Parte 2)',
         ]);
 		Agendamento::updateOrCreate([
-			'id_disciplina' => 'COMP361',
-			'id_monitor' => 'timp@ic.ufal.br',
-			'data_agendamento' => "28-06-2022",
-			'slot_agendamento' => 6
-			],[
-            'anotacao_agendamento' => 'Grupos 3 e 5',
-            'topico_agendamento' => 'Acompanhamento dos Projetos',
+			'id_horario' => 5,
+			'data' => '2022-06-27',
+            'anotacao' => 'Grupo 3',
+            'topico' => 'Acompanhamento de Projeto',
         ]);
 	}
 }
