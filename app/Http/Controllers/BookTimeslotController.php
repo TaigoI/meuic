@@ -13,10 +13,13 @@ use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class BookTimeslotController extends Controller
 {
     public function index(){
+		if(!Auth::user()){ return redirect('/'); }
+
 		$data = array('lista_disciplinas' => $this->disciplinasDisponiveis());
 
 		if(!session()->has('disciplina')){ return view('book_timeslot', $data); }
@@ -30,6 +33,7 @@ class BookTimeslotController extends Controller
 
 		if(!session()->has('slot')){ return view('book_timeslot', $data); }
 		$data['allow'] = true;
+		$data['horario_selecionado'] = $this->checkExiste(session()->get('monitor'), session()->get('dia'), session()->get('slot'));
 
 		return view('book_timeslot', $data);
     }
@@ -39,6 +43,8 @@ class BookTimeslotController extends Controller
 
 		return redirect('/book');
 	}
+
+
 
 	public function disciplinaForm(Request $request){ //base of cascading post requests
 		if(!array_key_exists('disciplina',$request->all())){ return redirect('/book/resetAll'); }
@@ -54,6 +60,8 @@ class BookTimeslotController extends Controller
 			->with('disciplina', $idDisciplina);
 	}
 
+
+
 	public function monitorForm(Request $request, $idDisciplina){ //base of cascading post requests
 		if(!array_key_exists('monitor',$request->all())){ return $this->disciplina($idDisciplina); }
 		return $this->monitor($idDisciplina, $request->all()['monitor']);
@@ -68,6 +76,8 @@ class BookTimeslotController extends Controller
 			->with('disciplina', $idDisciplina)
 			->with('monitor', $idMonitor);
 	}
+
+
 
 	public function diaForm(Request $request, $idDisciplina, $idMonitor){ //base of cascading post requests
 		if(!array_key_exists('dia',$request->all())){ return $this->monitor($idDisciplina, $idMonitor); } 
@@ -85,6 +95,8 @@ class BookTimeslotController extends Controller
 			->with('dia', $idDia);
 	}
 
+
+
 	public function slotForm(Request $request, $idDisciplina, $idMonitor, $idDia){ //base of cascading post requests
 		if(!array_key_exists('slot',$request->all())){ return $this->dia($idDisciplina, $idMonitor, $idDia); } 
 		return $this->slot($idDisciplina, $idMonitor, $idDia, $request->all()['slot']);
@@ -101,6 +113,8 @@ class BookTimeslotController extends Controller
 			->with('dia', $idDia)
 			->with('slot', $idSlot);
 	}
+
+
 
 	public function disciplinasDisponiveis(){
         $disciplinas = Disciplina::
@@ -148,7 +162,10 @@ class BookTimeslotController extends Controller
 		//Se for possível fazer por subquery ou whereDoesntHave com filtro de count, é muito mais interessante...
 		foreach($dias as $dia){
 			$slots = $this->slotsDisponiveis($idMonitor, $dia->id_dia);
-			if(!count($slots) || $dia->id_dia >= date('w')){
+			$checkPrevious = $dia->id_dia >= date('w');
+			
+			//FIXME Ativar quando em produção para evitar agendamentos anteriores...
+			if(!count($slots)/* || $checkPrevious */){ 
 				array_push($filtered, $dia->id_dia);
 			}
 		}
@@ -177,8 +194,11 @@ class BookTimeslotController extends Controller
 		->get();
 	}
 
+
+
 	public function checkOcupado($idMonitor, $idDia, $idSlot){
-		return Agendamento::whereHas('horario', function (Builder $query) use($idMonitor, $idDia, $idSlot) {
+		return Agendamento::
+		whereHas('horario', function (Builder $query) use($idMonitor, $idDia, $idSlot) {
 			$inicio = date('d-m-Y', strtotime('-'.(date('w')).' days'));
 			$fim = date('d-m-Y', strtotime('+'.(6-date('w')).' days'));
 
@@ -187,6 +207,41 @@ class BookTimeslotController extends Controller
 			->where('id_dia', $idDia)
 			->where('id_slot', $idSlot)
 			->whereBetween('data', [$inicio, $fim]);
-		})->orderBy('id_agendamento', 'ASC')->get();
+		})
+		->first();
+	}
+
+	public function checkExiste($idMonitor, $idDia, $idSlot){
+		return Horario::
+		where('ativo', true)
+		->where('id_monitor', $idMonitor)
+		->where('id_dia', $idDia)
+		->where('id_slot', $idSlot)
+		->first();
+	}
+
+
+
+	public function save(Request $request, $idDisciplina, $idMonitor, $idDia, $idSlot){
+		$horario = $this->checkExiste($idMonitor, $idDia, $idSlot);
+		if(!$horario){
+			session()->flash('error', 'O horário selecionado não existe... Tente novamente');
+			return redirect('/book/resetAll');
+		}
+
+		if(!$this->checkOcupado($idMonitor, $idDia, $idSlot)){
+			session()->flash('error', 'O horário selecionado está ocupado... Tente novamente');
+			return $this->monitor($idDisciplina, $idMonitor);
+		}
+
+		if(!array_key_exists('slot',$request->all())){ return $this->dia($idDisciplina, $idMonitor, $idDia); } 
+		Agendamento::create([
+			'id_horario' => $horario->id_horario,
+			'data' => date('d/m/Y', strtotime('+'.($horario->id_dia-date('w')).' days')),
+			'topico' => array_key_exists('topico',$request->all() ? $request->all()['topico'] : "Tópico não especificado..."),
+			'anotacao' => array_key_exists('anotacao',$request->all() ? $request->all()['anotacao'] : "Anotações não especificadas...")
+		]);
+		session()->flash('success', 'Agendamento feito com sucesso! Confira seu Google Calendar Institucional.');
+		return redirect('/book/resetAll');
 	}
 }

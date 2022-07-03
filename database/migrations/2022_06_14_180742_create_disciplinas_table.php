@@ -18,6 +18,7 @@ class CreateDisciplinasTable extends Migration
         Schema::create('disciplinas', function (Blueprint $table) {
             $table->string('id_disciplina')->primary();
             $table->string('name_disciplina');
+			$table->string('cor');
         });
     }
 

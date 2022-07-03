@@ -11,10 +11,7 @@ class ProfileController extends Controller
 {
     public function getView()
     {
-        if(!Auth::user()){
-			return redirect('/home');
-		}
-
+        if(!Auth::user()){ return redirect('/'); }
 		return view('complete_profile');
     }
 

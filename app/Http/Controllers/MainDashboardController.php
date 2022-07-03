@@ -6,38 +6,39 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Disciplina;
 use App\Models\Modulo;
 use App\Models\Agendamento;
+use App\Models\Horario;
+use Illuminate\Database\Eloquent\Builder;
 
 class MainDashboardController extends Controller
 {
-    public function index(){
-        /* $disciplinas = DB::select('select modulos.modulo, disciplinas.id_disciplina, disciplinas.name_disciplina from modulos, 
-                                    disciplinas where modulos.id_disciplina = disciplinas.id_disciplina order by modulo ASC');
-         */
-        //dd($disciplinas);
-        
-        $query = Modulo::addSelect(['name_disciplina' => Disciplina::select('name_disciplina')
-            ->whereColumn('modulos.id_disciplina', 'disciplinas.id_disciplina')
-        ])->orderBy('modulo', 'ASC')->get();
-        
+    public function index(){             
         $disciplinas = collect();
 		$agendamentos = collect();
 
-        foreach ($query as $item) {            
-            $disciplinas->put($item->modulo, collect());           
-        }
+		$modulos = Modulo::all()->unique('modulo');
+		foreach($modulos as $modulo){
+			$disciplinas->put($modulo->modulo, Disciplina::whereHas('modulo', function (Builder $query) use($modulo) {
+				$query->where('modulo', $modulo->modulo);
+			})->orderBy('name_disciplina', 'ASC')->get());
+		}
 
-        foreach ($query as $item) {            
-            $disciplinas[$item->modulo]->put($item->id_disciplina, $item->name_disciplina);           
-        } 
-
-		$semana_atual = date('w');
-		$inicio_semana = date('d-m-Y', strtotime('-'.$semana_atual.' days'));
-		$fim_semana = date('d-m-Y', strtotime('+'.(6-$semana_atual).' days'));
+		$inicio_semana = date('d-m-Y', strtotime('-'.date('w').' days'));
+		$fim_semana = date('d-m-Y', strtotime('+'.(6-date('w')).' days'));
 		if(Auth::user()){
-			$aux = []; //TODO
+			$idMonitor = Auth::user()->email;
+			$aux = Agendamento::
+			whereBetween('data', [$inicio_semana, $fim_semana])
+			->whereHas('horario', function (Builder $query) use($idMonitor) {
+				$query
+				->where('id_monitor', $idMonitor)
+				->where('id_dia', '>=', date('w'))
+				->where('ativo', true);
+			})
+			->get();
 			
-			foreach ($aux as $item) {            
-				$agendamentos->put($item->id_agendamento, $item);           
+			foreach ($aux as $agendamento) {   
+				$horario = Horario::where('id_horario', $agendamento->id_horario)->first();    
+				$agendamentos->put($agendamento->id_agendamento, compact('agendamento', 'horario'));           
 			}
 		}
         

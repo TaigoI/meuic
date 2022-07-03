@@ -25,7 +25,7 @@ class Agendamento extends Model
 
     public function horario()
     {
-        return $this->belongsTo(Horario::class, 'id_horario','id_horario');
+        return $this->belongsTo(Horario::class, 'id_horario','id_horario')->orderBy('id_dia', 'ASC')->orderBy('id_slot', 'ASC');
         // testar isso daqui
     }
 }

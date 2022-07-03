@@ -52,7 +52,7 @@ Route::get('/timetable/{idDisciplina}', [ClassTimetableController::class, 'index
 Route::post('/timetable/book/{idDisciplina}/{idMonitor}/{idDia}/{idSlot}', [ClassTimetableController::class, 'index']);
 
 Route::get('/book', [BookTimeslotController::class, 'index']);
-Route::post('/book', [BookTimeslotController::class, 'getMonitoresSlots']);
+Route::post('/book', [BookTimeslotController::class, 'index']);
 
 Route::get('/book/resetAll', [BookTimeslotController::class, 'resetAll']);
 Route::post('/book/disciplina', [BookTimeslotController::class, 'disciplinaForm']);
@@ -60,4 +60,5 @@ Route::post('/book/{idDisciplina}/monitor', [BookTimeslotController::class, 'mon
 Route::post('/book/{idDisciplina}/{idMonitor}/dia', [BookTimeslotController::class, 'diaForm']);
 Route::post('/book/{idDisciplina}/{idMonitor}/{idDia}/slot', [BookTimeslotController::class, 'slotForm']);
 Route::post('/book/{idDisciplina}/{idMonitor}/{idDia}/{idSlot}', [BookTimeslotController::class, 'slot']);
+Route::post('/book/{idDisciplina}/{idMonitor}/{idDia}/{idSlot}/save', [BookTimeslotController::class, 'save']);
 

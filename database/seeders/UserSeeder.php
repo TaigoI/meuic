@@ -18,6 +18,13 @@ class UserSeeder extends Seeder
     public function run()
     {
         //
+		User::updateOrCreate(['email' => 'user@ic.ufal.br'],[
+            'google_id' => 0,
+            'matricula'=> 0000,
+            'name' => "Estudante da Silva",
+            'picture' => "https://novamanha.novabrasilfm.com.br/wp-content/uploads/mark-zuckerberg.jpg",
+            'user_role' => 'S'
+        ]);
         User::updateOrCreate(['email' => 'mjgs@ic.ufal.br'],[
             'google_id' => 1,
             'matricula'=> 1234,
