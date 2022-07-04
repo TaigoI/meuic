@@ -15,15 +15,18 @@ return new class extends Migration
     {
         Schema::create('agendamentos', function (Blueprint $table) {
             $table->id('id_agendamento');
-            $table->string('id_disciplina');
-            $table->foreign('id_disciplina')->references('id_disciplina')->on('disciplinas');
-            $table->string('id_monitor');
-            $table->foreign('id_monitor')->references('email')->on('users');
-            $table->timestamp('data_agendamento');
-            $table->integer('slot_agendamento');
-            $table->foreign('slot_agendamento')->references('id_slots')->on('slots');
-            $table->string('anotacao_agendamento');
-            $table->string('topico_agendamento');
+			
+            $table->foreignId('id_horario');
+            $table->foreign('id_horario')->references('id_horario')->on('horarios');
+
+            $table->timestamp('data');
+			$table->unique(['id_horario', 'data']);
+
+            $table->string('anotacao');
+            $table->string('topico');
+
+			$table->string('requerente');
+            $table->foreign('requerente')->references('email')->on('users');
         });
     }
 

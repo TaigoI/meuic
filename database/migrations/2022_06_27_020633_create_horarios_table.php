@@ -17,12 +17,12 @@ return new class extends Migration
             $table->id('id_horario');
             $table->string('id_monitor');
             $table->foreign('id_monitor')->references('email')->on('users');
-            $table->integer('dia');
-			$table->foreign('dia')->references('id_dia')->on('dias');
-            $table->integer('slot');
-            $table->foreign('slot')->references('id_slots')->on('slots');
-			$table->boolean('online')->default(false);
-            
+            $table->integer('id_dia');
+			$table->foreign('id_dia')->references('id_dia')->on('dias');
+            $table->integer('id_slot');
+            $table->foreign('id_slot')->references('id_slot')->on('slots');
+			$table->boolean('ativo')->default(true);
+            $table->boolean('online')->default(false);
         });
     }
 

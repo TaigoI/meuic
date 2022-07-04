@@ -6,138 +6,242 @@ use App\Models\Agendamento;
 use App\Models\Monitores;
 use App\Models\Disciplina;
 use App\Models\Horario;
+use App\Models\Dia;
 use App\Models\Slot;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class BookTimeslotController extends Controller
 {
     public function index(){
+		if(!Auth::user()){ return redirect('/'); }
 
-        $disciplinas_monitoria = $this->makeMap();
-        $week_limits = $this->generateDataInterval();
-        session()->forget(['idDisc', 'discMonitor', 'selectedDate', 'selectedSlot']);
-        
-        return view('book_timeslot', compact('disciplinas_monitoria', 'week_limits'));
+		$data = array('lista_disciplinas' => $this->disciplinasDisponiveis());
+
+		if(!session()->has('disciplina')){ return view('book_timeslot', $data); }
+		$data['lista_monitores'] = $this->monitoresDisponiveis(session()->get('disciplina'));
+
+		if(!session()->has('monitor')){ return view('book_timeslot', $data); }
+		$data['lista_dias'] = $this->diasDisponiveis(session()->get('monitor'));
+
+		if(!session()->has('dia')){ return view('book_timeslot', $data); }
+		$data['lista_slots'] = $this->slotsDisponiveis(session()->get('monitor'), session()->get('dia'));
+
+		if(!session()->has('slot')){ return view('book_timeslot', $data); }
+		$data['allow'] = true;
+		$data['horario_selecionado'] = $this->checkExiste(session()->get('monitor'), session()->get('dia'), session()->get('slot'));
+
+		return view('book_timeslot', $data);
     }
 
-    public function makeMap(){
-       /*  $monitor_disciplina = Monitores::addSelect(['disciplina' => Disciplina::select('name_disciplina')
-            ->whereColumn('monitores.id_disciplina', 'disciplinas.id_disciplina')] )->get(); */
+	public function resetAll(){
+		session()->forget(['disciplina', 'monitor', 'dia', 'slot']);
 
-        $monitor_disciplina = Monitores::with(['disciplina'])->get();
-        //dump($monitor_disciplina);
+		return redirect('/book');
+	}
 
-       
 
-        $disciplinas_monitoria = collect();
 
-        foreach ($monitor_disciplina as $disciplina) {
-            $disciplinas_monitoria->put($disciplina->disciplina->name_disciplina, $disciplina->id_disciplina);
-        }
-        
-        //dd($disciplinas_monitoria['ESTRUTURA DE DADOS']);
-    
-        return $disciplinas_monitoria;
+	public function disciplinaForm(Request $request){ //base of cascading post requests
+		if(!array_key_exists('disciplina',$request->all())){ return redirect('/book/resetAll'); }
+		return $this->disciplina($request->all()['disciplina']);
+	}
+
+	public function disciplina($idDisciplina){ //base of cascading post requests
+		$d = $this->disciplinasDisponiveis()->where('id_disciplina', $idDisciplina)->first();
+		if(!$d){ return redirect('/book/resetAll'); }
+		
+		session()->forget(['monitor', 'dia', 'slot', 'allow']);
+		return redirect('/book')
+			->with('disciplina', $idDisciplina);
+	}
+
+
+
+	public function monitorForm(Request $request, $idDisciplina){ //base of cascading post requests
+		if(!array_key_exists('monitor',$request->all())){ return $this->disciplina($idDisciplina); }
+		return $this->monitor($idDisciplina, $request->all()['monitor']);
+	}
+
+	public function monitor($idDisciplina, $idMonitor){
+		$m = $this->monitoresDisponiveis($idDisciplina)->where('id_aluno', $idMonitor)->first();
+		if(!$m){ return $this->disciplina($idDisciplina); }
+		
+		session()->forget(['dia', 'slot', 'allow']);
+		return redirect('/book')
+			->with('disciplina', $idDisciplina)
+			->with('monitor', $idMonitor);
+	}
+
+
+
+	public function diaForm(Request $request, $idDisciplina, $idMonitor){ //base of cascading post requests
+		if(!array_key_exists('dia',$request->all())){ return $this->monitor($idDisciplina, $idMonitor); } 
+		return $this->dia($idDisciplina, $idMonitor, $request->all()['dia']);
+	}
+
+	public function dia($idDisciplina, $idMonitor, $idDia){
+		$d = $this->diasDisponiveis($idMonitor)->where('id_dia', $idDia)->first();
+		if(!$d){ return $this->monitor($idDisciplina, $idMonitor); }
+		
+		session()->forget(['slot', 'allow']);
+		return redirect('/book')
+			->with('disciplina', $idDisciplina)
+			->with('monitor', $idMonitor)
+			->with('dia', $idDia);
+	}
+
+
+
+	public function slotForm(Request $request, $idDisciplina, $idMonitor, $idDia){ //base of cascading post requests
+		if(!array_key_exists('slot',$request->all())){ return $this->dia($idDisciplina, $idMonitor, $idDia); } 
+		return $this->slot($idDisciplina, $idMonitor, $idDia, $request->all()['slot']);
+	}
+
+	public function slot($idDisciplina, $idMonitor, $idDia, $idSlot){
+		$s = $this->slotsDisponiveis($idMonitor, $idDia)->where('id_slot', $idSlot)->first();
+		if(!$s){ return $this->dia($idDisciplina, $idMonitor, $idDia); }
+		
+		session()->forget(['allow']);
+		return redirect('/book')
+			->with('disciplina', $idDisciplina)
+			->with('monitor', $idMonitor)
+			->with('dia', $idDia)
+			->with('slot', $idSlot);
+	}
+
+
+
+	public function disciplinasDisponiveis(){
+        $disciplinas = Disciplina::
+		has('monitor')
+		->orderBy('id_disciplina', 'ASC')
+		->get();
+
+		return $disciplinas;
     }
 
-    public function generateDataInterval(){
-        $today = CarbonImmutable::now('America/Sao_Paulo');
+	public function monitoresDisponiveis($idDisciplina){
+		$monitores = Monitores::
+		where('id_disciplina', $idDisciplina)
+		->orderBy('id_monitor', 'ASC')
+		->get();
 
-        /* dump($today->firstWeekDay);                           // int(0)
-        dump($today->lastWeekDay);                            // int(6) */
-        /* dump($today->startOfWeek()->format('Y-m-d H:i'));     // string(16) "2022-05-01 00:00"
-        dump($today->endOfWeek()->format('Y-m-d H:i'));   */   
+		/*$filtered = [];
+		//Comentado por ser de altíssimo custo (cascade de todas as funções "Disponiveis")
+		//Procurar solução melhor utilizando o Eloquent... possivelmente subquery, embora
+		//... que subquery pode cair no mesmo problema de custo alto, o ideal seria query
+		//... com group by e distinct id_monitor, utilizando joins até chegar em agendamento
+		foreach($monitores as $monitor){
+			if(!count($this->diasDisponiveis($monitor->id_aluno))){
+				array_push($filtered, $monitor->id_monitor);
+			}
+		}*/
 
-        //$start_of_week_day = $today->startOfWeek(Carbon::MONDAY);
-        $end_of_week_day = $today->endOfWeek(Carbon::FRIDAY);
+		return $monitores;//->except($filtered);
+	}
 
-        if($today->weekday() == 6 || $today->weekday() == 0){ //se sabado ou domingo, so agenda a partir da segunda
-            $today = $end_of_week_day->subDays(4);
-        } 
-        
-        /* dump($today->format('Y-m-d'));       
-        dump($today < $end_of_week_day);
-        dump($start->format('Y-m-d H:i'));                 
-        dump($end_of_week_day->format('Y-m-d H:i')); */
-       
-        $week_limits = [$today->format('Y-m-d'), $end_of_week_day->format('Y-m-d')];
-        return $week_limits;
-    } 
+	public function diasDisponiveis($idMonitor){
+		$dias = Dia::
+		whereHas('horario', function (Builder $query) use($idMonitor) {
+			$query
+			->where('id_monitor', $idMonitor)
+			->where('ativo', true);
+		})
+		->orderBy('id_dia', 'ASC')
+		->get();
 
-    public function getMonitoresSlots(Request $request){
-        //dump($request);
-        $horarios = null;
-        if($request->topicoInput != null){ //significa que todos os inputs foram preenchidos e pode ser feito o agendamento
-            //dd($request);
-            $created = Agendamento::create([
-                "id_disciplina" => $request->disciplinaSelect,
-                "id_monitor" =>  $request->monitorSelect,
-                "data_agendamento" => $request->dataInput,
-                "slot_agendamento" => $request->horarioSelect,
-                "topico_agendamento" => $request->topicoInput,                           
-                "anotacao_agendamento" => $request->anotacoesInput,
-            ]);
+		$filtered = [];
+		//Mantido, PORÉM, é de altíssimo custo (por chamar a função slotsDisponiveis)
+			//Chamada para esta função foi comentada em monitoresDisponiveis por cascade
+			//O(m monitores * d dias * s slots) é exponencial 2^K onde K é a quantidade de bits...
+		//Se for possível fazer por subquery ou whereDoesntHave com filtro de count, é muito mais interessante...
+		foreach($dias as $dia){
+			$slots = $this->slotsDisponiveis($idMonitor, $dia->id_dia);
+			$checkPrevious = $dia->id_dia >= date('w');
+			
+			//FIXME Ativar quando em produção para evitar agendamentos anteriores...
+			if(!count($slots)/* || $checkPrevious */){ 
+				array_push($filtered, $dia->id_dia);
+			}
+		}
 
-            if($created){session()->flash('success', 'Agendamento feito com sucesso! Confira seu Google Calendar Institucional.');}
-            else{session()->flash('error', 'Opa! Algo deu errado. Tente de novo mais tarde.');}
+		return $dias->except($filtered);
+	}
 
-            return redirect('/timetable/'.$request->disciplinaSelect);
-        } else { // aqui vao as ações que renderizam dinamicamente os dropdowns
-            if($request->has('disciplinaSelect')){ //dropdown de disciplina
-                $idDisc = $request->disciplinaSelect;                
-                
-                if($idDisc != session('idDisc')){
-                    session()->forget(['discMonitor', 'selectedDate','selectedSlot']);
+	public function slotsDisponiveis($idMonitor, $idDia){
+		return Slot::
+		whereHas('horario', function (Builder $query) use($idMonitor, $idDia) {
+			$query
+			->where('id_monitor', $idMonitor)
+			->where('id_dia', $idDia)
+			->where('ativo', true);
+		})
+		->whereDoesntHave('horario.agendamento', function (Builder $query) use($idMonitor, $idDia) {
+			$inicio = date('d-m-Y', strtotime('-'.(date('w')).' days'));
+			$fim = date('d-m-Y', strtotime('+'.(6-date('w')).' days'));
+			
+			$query
+			->where('id_monitor', $idMonitor)
+			->where('id_dia', $idDia)
+			->whereBetween('data', [$inicio, $fim]);
+		})
+		->orderBy('id_slot', 'ASC')
+		->get();
+	}
 
-                    session()->put('idDisc', $idDisc);
-                    $request->monitorSelect = null;
-                    //dd($monitores);
-                }           
-                $monitores = Monitores::where('id_disciplina', $idDisc)->addselect(['name' => User::select('name')->whereColumn('monitores.id_aluno', 'users.email')])->get();
-                
-            } if($request->has('monitorSelect')){ //dropdown de monitor
-                $id_monitor = $request->monitorSelect;
 
-                if($id_monitor != session('discMonitor')){
-                    $request->dataInput = null;
-                    session()->forget(['selectedDate', 'selectedSlot']);
-                }
 
-                session()->put('discMonitor', $id_monitor);
+	public function checkOcupado($idMonitor, $idDia, $idSlot){
+		return Agendamento::
+		whereHas('horario', function (Builder $query) use($idMonitor, $idDia, $idSlot) {
+			$inicio = date('d-m-Y', strtotime('-'.(date('w')).' days'));
+			$fim = date('d-m-Y', strtotime('+'.(6-date('w')).' days'));
 
-                $horarios = Horario::where('id_monitor', $id_monitor)->addSelect(['display_name' => Slot::select('display_name')
-                ->whereColumn('horarios.slot', 'slots.id_slots')])->get();
+			$query
+			->where('id_monitor', $idMonitor)
+			->where('id_dia', $idDia)
+			->where('id_slot', $idSlot)
+			->whereBetween('data', [$inicio, $fim]);
+		})
+		->first();
+	}
 
-                //dump($horarios);
-            } if($request->dataInput != null and  session('discMonitor') != null){ //input de data (verifica se o monitor esta disponivel na data escolhida)
-                session()->forget(['selectedDate','selectedSlot']);
+	public function checkExiste($idMonitor, $idDia, $idSlot){
+		return Horario::
+		where('ativo', true)
+		->where('id_monitor', $idMonitor)
+		->where('id_dia', $idDia)
+		->where('id_slot', $idSlot)
+		->first();
+	}
 
-                $data = Carbon::createFromFormat('Y-m-d', $request->dataInput)->locale('pt_BR');
-                $weekday_data = $data->weekday();
-                //dump($weekday_data);
 
-                $monitor_on_weekday = Horario::where('dia', $weekday_data)->where('id_monitor', session('discMonitor'))->addSelect(['display_name' => Slot::select('display_name')
-                ->whereColumn('horarios.slot', 'slots.id_slots')])->get();
-            
-                if(count($monitor_on_weekday) == 0){
-                    session()->now('error', 'O monitor não está disponível no dia '.$data->format('d/m/Y'));
-                } else{
-                    session()->put('selectedDate', $request->dataInput);
 
-                    $horarios = $monitor_on_weekday;
-                    //dump($horarios);
-                }          
-            } if($request->horarioSelect != null and  session('selectedDate') != null){ //adiciona o slot selecionado na session
-                session()->put('selectedSlot', $request->horarioSelect);
-            }
+	public function save(Request $request, $idDisciplina, $idMonitor, $idDia, $idSlot){
+		$horario = $this->checkExiste($idMonitor, $idDia, $idSlot);
+		if(!$horario){
+			session()->flash('error', 'O horário selecionado não existe... Tente novamente');
+			return redirect('/book/resetAll');
+		}
 
-            $disciplinas_monitoria = $this->makeMap();
-            $week_limits = $this->generateDataInterval();
-    
-            return view('book_timeslot', compact('disciplinas_monitoria', 'week_limits', 'monitores', 'horarios'));
-        }                    
-    }
+		if(!$this->checkOcupado($idMonitor, $idDia, $idSlot)){
+			session()->flash('error', 'O horário selecionado está ocupado... Tente novamente');
+			return $this->monitor($idDisciplina, $idMonitor);
+		}
+
+		if(!array_key_exists('slot',$request->all())){ return $this->dia($idDisciplina, $idMonitor, $idDia); } 
+		Agendamento::create([
+			'id_horario' => $horario->id_horario,
+			'data' => date('d/m/Y', strtotime('+'.($horario->id_dia-date('w')).' days')),
+			'topico' => array_key_exists('topico',$request->all() ? $request->all()['topico'] : "Tópico não especificado..."),
+			'anotacao' => array_key_exists('anotacao',$request->all() ? $request->all()['anotacao'] : "Anotações não especificadas...")
+		]);
+		session()->flash('success', 'Agendamento feito com sucesso! Confira seu Google Calendar Institucional.');
+		return redirect('/book/resetAll');
+	}
 }

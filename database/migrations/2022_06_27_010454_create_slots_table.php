@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('slots', function (Blueprint $table) {
-            $table->id('id_slots');
+            $table->id('id_slot');
             $table->string('display_name');
             $table->string('start_slot');
             $table->string('end_slot');

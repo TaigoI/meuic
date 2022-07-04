@@ -18,6 +18,13 @@ class UserSeeder extends Seeder
     public function run()
     {
         //
+		User::updateOrCreate(['email' => 'user@ic.ufal.br'],[
+            'google_id' => 0,
+            'matricula'=> 0000,
+            'name' => "Estudante da Silva",
+            'picture' => "https://novamanha.novabrasilfm.com.br/wp-content/uploads/mark-zuckerberg.jpg",
+            'user_role' => 'S'
+        ]);
         User::updateOrCreate(['email' => 'mjgs@ic.ufal.br'],[
             'google_id' => 1,
             'matricula'=> 1234,
@@ -28,7 +35,7 @@ class UserSeeder extends Seeder
         User::updateOrCreate(['email' => 'ffv@ic.ufal.br'],[
             'google_id' => 2,
             'matricula'=> 4321,
-            'name' => "felipe",
+            'name' => "Felipe Ferreira Vasconcelos",
             'picture' => "https://conteudo.imguol.com.br/c/noticias/92/2022/05/04/elon-musk-no-baile-met-gala-em-nova-york-em-2-de-maio-de-2022-1651683047262_v2_4x3.jpg",
             'user_role' => 'M'
         ]);
@@ -51,7 +58,7 @@ class UserSeeder extends Seeder
             'matricula'=> 1567,
             'name' => "Taigo Italo de Moraes Pedrosa",
             'picture' => "https://upload.wikimedia.org/wikipedia/commons/a/a1/Alan_Turing_Aged_16.jpg",
-            'user_role' => 'T'            
+            'user_role' => 'M'            
     	]);
         User::updateOrCreate(['email' => 'dbrs@ic.ufal.br'],[
             'google_id' => 2,

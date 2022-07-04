@@ -50,19 +50,24 @@
 									@foreach($slot['data'] as $data)
 										<div class="slot-card slot-card-{{count($slot['data'])}} {{$data['color']}} {{ ($loop->index + 1 != count($slot['data'])) ? 'card-rightspace' : '' }}">
 											@foreach($data['subslots'] as $subslot)
-												<div class="slot-card tip slot-sub {{ (array_key_exists('booked',$subslot) and $subslot['booked']) ? 'slot-sub-booked' : '' }} {{ (array_key_exists('online',$subslot) and $subslot['online']) ? 'slot-sub-online' : '' }}">
-													@if(array_key_exists('booked',$subslot) and $subslot['booked'])
-														<span class="anti-tiptext icon-sm">
-															lock_clock
-														</span>
-														<span class="tiptext"> {{$subslot['booked']['topico_agendamento']}} </span>
-													@elseif(array_key_exists('online',$subslot) and $subslot['online'])
-														<span class="anti-tiptext icon-sm">
-															cloud	
-														</span>
-														<span class="tiptext"> Somente Online </span>
-													@endif
-												</div>
+												<form class="slot-sub-form" method="POST" action="/book/{{$disciplina->id_disciplina}}/{{$data['monitor']}}/{{$day}}/{{$slot['i']+$loop->index}}" >
+													@csrf
+													<button type="{{(!$subslot['past'] and !$subslot['booked']) ? 'submit' : 'button'}}" class="slot-card tip slot-sub{{$subslot['past'] ? ' past' : ($subslot['booked'] ? ' slot-sub-booked' : ($subslot['online'] ? ' slot-sub-online' : ''))}}">
+														@if(array_key_exists('past',$subslot) and $subslot['past'])
+															<span class="tiptext line-clamp-3"> Data Anterior </span>
+														@elseif(array_key_exists('booked',$subslot) and $subslot['booked'])
+															<span class="anti-tiptext icon-sm">
+																lock_clock
+															</span>
+															<span class="tiptext line-clamp-3"> {{$subslot['booked']['topico']}} </span>
+														@elseif(array_key_exists('online',$subslot) and $subslot['online'])
+															<span class="anti-tiptext icon-sm">
+																cloud	
+															</span>
+															<span class="tiptext"> Somente Online </span>
+														@endif
+													</button>
+												</form>
 											@endforeach
 										</div>
 									@endforeach

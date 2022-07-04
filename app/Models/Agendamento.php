@@ -17,23 +17,15 @@ class Agendamento extends Model
 
     protected $fillable = [
         'id_agendamento',
-        'id_disciplina',
-        'id_monitor',
-        'data_agendamento',
-        'slot_agendamento',
-        'anotacao_agendamento',
-        'topico_agendamento',
+        'id_horario',
+        'data',
+        'topico',
+        'anotacao',
     ];
 
-    // Adicionar o de slot aqui
-    public function modulo()
+    public function horario()
     {
-        return $this->belongsTo(Monitor::class, 'id_monitor','id_monitor');
+        return $this->belongsTo(Horario::class, 'id_horario','id_horario')->orderBy('id_dia', 'ASC')->orderBy('id_slot', 'ASC');
         // testar isso daqui
-    }
-
-    public function slot(){
-        return $this->hasMany(Slot::class,'id_slots','slot_agendamento');
-        // testar a inversao disso aqui
     }
 }

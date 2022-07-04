@@ -70,7 +70,7 @@ class ManageMonitorController extends Controller
             }  
             else{
                 //session()->now('warning', 'Esse aluno já é monitor de outra disciplina. Remova-o dela primeiro.'); 
-                return ["ME"];            
+                return ["ME", Monitores::where('id_aluno', $usuario->email)->first()];            
             }            
         } 
         else{

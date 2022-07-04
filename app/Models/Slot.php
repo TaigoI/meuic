@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Slot extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'id_slots';
+    protected $primaryKey = 'id_slot';
 
     
     public $timestamps = false;
@@ -16,9 +16,13 @@ class Slot extends Model
 
     // Evitar que o usuario acesse diretamente o userRole
     protected $fillable = [
-    'id_slots',
+    'id_slot',
     'display_name',
     'start_slot',
     'end_slot',
     ];
+
+	public function horario(){
+        return $this->hasMany(Horario::class,'id_slot','id_slot');
+    } 
 }

@@ -25,14 +25,15 @@ class Disciplina extends Model
     // Evitar que o usuario acesse diretamente o userRole
     protected $fillable = [
         'id_disciplina',
-        'name_disciplina'
+        'name_disciplina',
+		'cor'
     ];
 
 
     
     public function modulo()
     {
-        return $this->belongsToMany(Modulo::class, 'modulos','id_disciplina','id_disciplina');
+        return $this->belongsTo(Modulo::class, 'id_disciplina', 'id_disciplina');
     }
 
     public function monitor()
