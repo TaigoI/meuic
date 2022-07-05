@@ -224,6 +224,10 @@ footer{
 	background-color: hsla(0, 0%, 100%, .4);
 }
 
+.slot-sub-dark:hover{
+	background-color: hsla(0, 0%, 50%, .4) !important;
+}
+
 .slot-sub-booked{
 	background-color: hsla(0, 0%, 100%, .2);
 }

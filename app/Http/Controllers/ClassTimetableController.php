@@ -18,7 +18,6 @@ class ClassTimetableController extends Controller
         $disciplina = Disciplina::where('id_disciplina', $idDisciplina)->first();
 		if(!$disciplina){ return redirect('/'); }
 
-		$empty_timetable = array(1 => array(['size' => 8]), 2 => array(['size'=>8]), 3 => array(['size'=>8]), 4 => array(['size'=>8]), 5 => array(['size'=>8]));
 		$monitores = Monitores::where('id_disciplina', $disciplina->id_disciplina)->get();
 		$slots = Slot::all();
 		$dias = Dia::all();
@@ -31,7 +30,7 @@ class ClassTimetableController extends Controller
 		}
 
 		foreach($monitores as $monitor){
-			$horarios = Horario::where('id_monitor', $monitor->id_aluno)->get();
+			$horarios = Horario::where('ativo',true)->where('id_monitor', $monitor->id_aluno)->get();
 			foreach($horarios as $horario){
 				$tt[$horario->id_dia][$horario->id_slot][$monitor->id_aluno] = ['cor' => $monitor->cor, 'online' => $horario->online];
 			}
@@ -45,7 +44,7 @@ class ClassTimetableController extends Controller
 		foreach($dias as $dia){
 			$timetable[$dia->id_dia] = array();
 
-			$previous = $tt[$dia->id_dia][1];
+			$previous = $tt[$dia->id_dia][0];
 
 			$s = 0; $currentSize = 0;
 			while($s < count($slots)){
@@ -54,19 +53,7 @@ class ClassTimetableController extends Controller
 					$f = max(0, $s - 1); //slot final (limitado a positivos)
 
 					$block = array('size' => $currentSize, 'i' => $i, 'f' => $f);
-					if(count($tt[$dia->id_dia][$f])){ //olhando no final, mas poderia ser qualquer posição entre i e f (inclusos)
-						$block['data'] = array();
-						$past = false;//date('w') > $dia->id_dia;
-						foreach(array_keys($tt[$dia->id_dia][$f]) as $m){ //monitor
-							$subslots = array();
-							foreach(range($i, $f) as $subslot){
-								$booked = $this->checkOcupado($m, $dia->id_dia, $subslot);
-								array_push($subslots, ['online' => $tt[$dia->id_dia][$subslot][$m]['online'], 'booked' => $booked ? $booked : false, 'past' => $past]);
-							}
-							$data = array('color' => $tt[$dia->id_dia][$f][$m]['cor'], 'subslots' => $subslots, 'monitor' => $m);
-							array_push($block['data'], $data);
-						}
-					}
+					$block = $this->getBlock($block, $tt, $dia->id_dia);
 					
 					array_push($timetable[$dia->id_dia], $block);
 					$currentSize = 0;
@@ -77,19 +64,32 @@ class ClassTimetableController extends Controller
 				$s += 1;
 			}
 
-			//dd($timetable[$dia->id_dia], count($timetable[$dia->id_dia]));
-			$sum = 0;
-			foreach($timetable[$dia->id_dia] as $slot){
-				$sum += $slot['size'];
+			$finalSlot =  [ 'size' => $currentSize, 'i' => $s - $currentSize, 'f' => $s-1];
+			if(count(array_keys($tt[$dia->id_dia][$s-1]))){
+				$finalSlot = $this->getBlock($finalSlot, $tt, $dia->id_dia);
 			}
-			if($sum < $s){
-				array_push($timetable[$dia->id_dia], ['size' => $s-$sum]);
-			}
+			array_push($timetable[$dia->id_dia], $finalSlot);
 		}
-		//dd($tt,$timetable);
 
 		return view('class_timetable', ['disciplina' => $disciplina, 'timetable' => $timetable, 'slots' => $slots, 'dias' => $dias]);
     }
+
+	public function getBlock($block, $tt, $idDia){
+		if(count($tt[$idDia][$block['f']])){ //olhando no final, mas poderia ser qualquer posição entre i e f (inclusos)
+			$block['data'] = array();
+			$past = date('w') > $idDia;
+			foreach(array_keys($tt[$idDia][$block['f']]) as $m){ //monitor
+				$subslots = array();
+				foreach(range($block['i'], $block['f']) as $subslot){
+					$booked = $this->checkOcupado($m, $idDia, $subslot);
+					array_push($subslots, ['online' => $tt[$idDia][$subslot][$m]['online'], 'booked' => $booked ? $booked : false, 'past' => $past]);
+				}
+				$data = array('color' => $tt[$idDia][$block['f']][$m]['cor'], 'subslots' => $subslots, 'monitor' => $m);
+				array_push($block['data'], $data);
+			}
+		}
+		return $block;
+	}
 
 	public function notFound(){      
 		return redirect('/');
