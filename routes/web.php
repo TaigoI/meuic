@@ -60,6 +60,8 @@ Route::post('/timetable/book/{idDisciplina}/{idMonitor}/{idDia}/{idSlot}', [Clas
 
 Route::get('/book', [BookTimeslotController::class, 'index']);
 Route::post('/book', [BookTimeslotController::class, 'index']);
+
+
 Route::get('/book/resetAll', [BookTimeslotController::class, 'resetAll']);
 Route::post('/book/disciplina', [BookTimeslotController::class, 'disciplinaForm']);
 Route::post('/book/{idDisciplina}/monitor', [BookTimeslotController::class, 'monitorForm']);

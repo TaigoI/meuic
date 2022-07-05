@@ -54,7 +54,7 @@ class ClassTimetableController extends Controller
 
 					$block = array('size' => $currentSize, 'i' => $i, 'f' => $f);
 					$block = $this->getBlock($block, $tt, $dia->id_dia);
-					
+
 					array_push($timetable[$dia->id_dia], $block);
 					$currentSize = 0;
 				}
