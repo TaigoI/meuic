@@ -21,6 +21,7 @@ class Agendamento extends Model
         'data',
         'topico',
         'anotacao',
+        'requerente'
     ];
 
     public function horario()
