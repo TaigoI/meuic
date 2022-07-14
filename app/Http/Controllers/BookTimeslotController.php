@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Agendamento;
 use App\Models\Monitores;
 use App\Models\Disciplina;
@@ -14,7 +15,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Http;
 class BookTimeslotController extends Controller
 {
     public function index(){
@@ -223,25 +224,66 @@ class BookTimeslotController extends Controller
 
 
 	public function save(Request $request, $idDisciplina, $idMonitor, $idDia, $idSlot){
+		
 		$horario = $this->checkExiste($idMonitor, $idDia, $idSlot);
 		if(!$horario){
 			session()->flash('error', 'O horário selecionado não existe... Tente novamente');
 			return redirect('/book/resetAll');
 		}
 
-		if(!$this->checkOcupado($idMonitor, $idDia, $idSlot)){
-			session()->flash('error', 'O horário selecionado está ocupado... Tente novamente');
-			return $this->monitor($idDisciplina, $idMonitor);
-		}
+		// if(!$this->checkOcupado($idMonitor, $idDia, $idSlot)){
+		// 	session()->flash('error', 'O horário selecionado está ocupado... Tente novamente');
+		// 	return $this->monitor($idDisciplina, $idMonitor);
+		// }
 
-		if(!array_key_exists('slot',$request->all())){ return $this->dia($idDisciplina, $idMonitor, $idDia); } 
+		// if(!array_key_exists('slot',$request->all())){ return $this->dia($idDisciplina, $idMonitor, $idDia); } 
+		
+
 		Agendamento::create([
-			'id_horario' => $horario->id_horario,
-			'data' => date('d/m/Y', strtotime('+'.($horario->id_dia-date('w')).' days')),
-			'topico' => array_key_exists('topico',$request->all() ? $request->all()['topico'] : "Tópico não especificado..."),
-			'anotacao' => array_key_exists('anotacao',$request->all() ? $request->all()['anotacao'] : "Anotações não especificadas...")
-		]);
+		'id_horario'=>$horario->id_horario,
+		'data'=>date('d/m/Y', strtotime('+'.($horario->id_dia-date('w')).' days')),
+		'topico'=>(array_key_exists('topico',$request->all()) ? $request->all()['topico'] : "Tópico não especificado..."),
+		'anotacao'=>(array_key_exists('anotacoes',$request->all()) ? $request->all()['anotacoes'] : "Anotações não especificadas..."),
+		'requerente'=>Auth::user()->email]); 
+		
+		$topico = $request->all()['topico'];
+		//"2022-07-08T17:10:00.52-03:00"
+		// data + T + horaInicial+.52-03:00
+
+		$horaInicio = Slot::find($idSlot)->start_slot;
+		$horaFinal = Slot::find($idSlot)->end_slot;
+		$stringDataHoraInicio = date('Y-m-d', strtotime('+'.($horario->id_dia-date('w')).' days')).'T'.$horaInicio.':00.52-03:00';
+		$stringDataHoraFinal = date('Y-m-d', strtotime('+'.($horario->id_dia-date('w')).' days')).'T'.$horaFinal.':00.52-03:00';
+		
+		$userToken = Auth::user()->google_token;
+		
+
+		$response = Http::withToken($userToken)->post('https://www.googleapis.com/calendar/v3/calendars/primary/events?conferenceDataVersion=1',[
+			"end" => [
+				  "dateTime" => $stringDataHoraFinal
+			   ], 
+			"start" => [
+				"dateTime" => $stringDataHoraInicio
+				  ], 
+			"conferenceData" => [
+						"createRequest" => [
+						   "requestId" => "1" 
+						] 
+					 ], 
+			"attendees" => [
+							  [
+								 "email" => $idMonitor
+								 
+							  ] 
+						   ], 
+			"summary" => "Meu@IC: $topico",
+			"description" => $request->all()['anotacoes']
+		 ]);
+
+		
 		session()->flash('success', 'Agendamento feito com sucesso! Confira seu Google Calendar Institucional.');
 		return redirect('/book/resetAll');
+
+
 	}
 }

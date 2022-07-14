@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
 
 			$table->string('teacher_status')->default('NO'); //NO, REQUESTED, DENIED, ACCEPTED
             $table->string('user_role')->default('S');
-
+            $table->string('google_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
